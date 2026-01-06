@@ -1,42 +1,63 @@
 # RCC-Dash-1
 
-This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines Next.js, and more.
+RCC-Dash-1 is a Turborepo monorepo for a dashboard web app and shared packages.
 
-## Features
+## Tech Stack
 
-- **TypeScript** - For type safety and improved developer experience
-- **Next.js** - Full-stack React framework
-- **TailwindCSS** - Utility-first CSS for rapid UI development
-- **shadcn/ui** - Reusable UI components
-- **Turborepo** - Optimized monorepo build system
+- Next.js 16 (App Router) and React 19
+- Tailwind CSS v4, shadcn/ui, Base UI
+- next-themes, sonner, motion
+- TypeScript and Zod-based env validation
+- Bun and Turborepo
+
+## Repository Layout
+
+```
+RCC-Dash-1/
+├── apps/
+│   └── web/           # Next.js web app
+└── packages/
+    ├── config/        # Shared TS config
+    └── env/           # Shared env schemas (server/web/native)
+```
 
 ## Getting Started
 
-First, install the dependencies:
+Prerequisite: Bun 1.2+
+
+Install dependencies:
 
 ```bash
 bun install
 ```
 
-Then, run the development server:
+Run all apps (currently just web):
 
 ```bash
 bun run dev
 ```
 
-Open [http://localhost:3001](http://localhost:3001) in your browser to see the web application.
+Run only the web app:
 
-## Project Structure
-
-```
-RCC-Dash-1/
-├── apps/
-│   ├── web/         # Frontend application (Next.js)
+```bash
+bun run dev:web
 ```
 
-## Available Scripts
+Open http://localhost:3000.
 
-- `bun run dev`: Start all applications in development mode
-- `bun run build`: Build all applications
-- `bun run dev:web`: Start only the web application
-- `bun run check-types`: Check TypeScript types across all apps
+## Environment Variables
+
+Edit `apps/web/.env` as needed:
+
+```bash
+NEXT_PUBLIC_SERVER_URL=http://localhost:3000
+```
+
+Shared env schemas live in `packages/env/src/*.ts`.
+
+## Scripts
+
+- `bun run dev`: Start all apps in dev mode
+- `bun run dev:web`: Start the web app only
+- `bun run build`: Build all apps
+- `bun run check-types`: Typecheck across the repo
