@@ -1,5 +1,5 @@
 {
-  "name": "RCC-Dash-1",
+  "name": "RCC-Dash",
   "private": true,
   "workspaces": {
     "packages": [
@@ -21,12 +21,12 @@
     "dev:web": "turbo -F web dev"
   },
   "dependencies": {
-    "@RCC-Dash-1/env": "workspace:*",
+    "@RCC-Dash/env": "workspace:*",
     "dotenv": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@RCC-Dash-1/config": "workspace:*",
+    "@RCC-Dash/config": "workspace:*",
     "turbo": "^2.6.3",
     "typescript": "catalog:"
   },

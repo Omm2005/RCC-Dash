@@ -1,4 +1,4 @@
-import "@RCC-Dash-1/env/web";
+import "@RCC-Dash/env/web";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {

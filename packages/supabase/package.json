@@ -1,0 +1,33 @@
+{
+  "name": "@RCC-Dash/supabase",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@RCC-Dash/env": "workspace:*",
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.48.0"
+  },
+  "devDependencies": {
+    "@RCC-Dash/config": "workspace:*",
+    "typescript": "catalog:"
+  },
+  "exports": {
+    "./client": {
+      "types": "./src/client/client.ts",
+      "default": "./src/client/client.ts"
+    },
+    "./middleware": {
+      "types": "./src/client/middleware.ts",
+      "default": "./src/client/middleware.ts"
+    },
+    "./server": {
+      "types": "./src/client/server.ts",
+      "default": "./src/client/server.ts"
+    },
+    "./types": {
+      "types": "./src/types/index.ts",
+      "default": "./src/types/index.ts"
+    }
+  }
+}

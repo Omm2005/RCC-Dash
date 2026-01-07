@@ -1,3 +1,3 @@
 {
-  "extends": "@RCC-Dash-1/config/tsconfig.base.json"
+  "extends": "@RCC-Dash/config/tsconfig.base.json"
 }

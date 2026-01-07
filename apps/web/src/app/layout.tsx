@@ -20,8 +20,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RCC-Dash-1",
-  description: "RCC-Dash-1",
+  title: "RCC-Dash",
+  description: "RCC-Dash",
 };
 
 export default function RootLayout({

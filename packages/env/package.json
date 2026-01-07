@@ -1,5 +1,5 @@
 {
-  "name": "@RCC-Dash-1/env",
+  "name": "@RCC-Dash/env",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -12,7 +12,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@RCC-Dash-1/config": "workspace:*",
+    "@RCC-Dash/config": "workspace:*",
     "typescript": "catalog:"
   }
 }

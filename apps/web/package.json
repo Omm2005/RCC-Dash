@@ -8,11 +8,14 @@
     "start": "next start"
   },
   "dependencies": {
-    "@RCC-Dash-1/env": "workspace:*",
+    "@RCC-Dash/env": "workspace:*",
+    "@RCC-Dash/supabase": "workspace:*",
     "@base-ui/react": "^1.0.0",
     "@hugeicons/core-free-icons": "^3.1.1",
     "@hugeicons/react": "^1.1.4",
     "@tanstack/react-form": "^1.27.3",
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.48.0",
     "babel-plugin-react-compiler": "^1.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -31,7 +34,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@RCC-Dash-1/config": "workspace:*",
+    "@RCC-Dash/config": "workspace:*",
     "@tailwindcss/postcss": "^4.1.10",
     "@types/node": "^20",
     "@types/react": "^19.2.7",
