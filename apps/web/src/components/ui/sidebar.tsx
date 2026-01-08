@@ -24,6 +24,8 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { SidebarLeftIcon } from "@hugeicons/core-free-icons"
+import SidebarIcon from "../Icons/SidebarIcon"
+import { Kbd } from "./kbd"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -256,31 +258,37 @@ function SidebarTrigger({
   onClick,
   ...props
 }: React.ComponentProps<typeof Button>) {
-  const { toggleSidebar } = useSidebar()
+  const { toggleSidebar, open, openMobile } = useSidebar()
+  const isOpen = open || openMobile
 
   return (
     <Tooltip>
-      <TooltipTrigger asChild >
+      <TooltipTrigger asChild>
     <Button
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
-      variant="ghost"
-      size="icon-sm"
+      variant='ghost'
+      size="icon"
       className={cn(className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
       }}
       {...props}
-      >
-      <HugeiconsIcon icon={SidebarLeftIcon} strokeWidth={2} />
+    >
+          <SidebarIcon open={isOpen} size={20} className="shrink-0" />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
       </TooltipTrigger>
-      <TooltipContent >
-        <p>Toggle Sidebar</p>
-      </TooltipContent>
-      </Tooltip>
+      <TooltipContent
+        side="top"
+        align="center"
+        sideOffset={5}
+      >
+        Toggle Sidebar {' '}
+        <Kbd>⌘ + B</Kbd>
+        </TooltipContent>
+    </Tooltip>
   )
 }
 

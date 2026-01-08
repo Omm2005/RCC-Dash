@@ -79,13 +79,10 @@ const signUpWithPassword = async (
     },
   });
 
-  if (error) {
-    const isExistingUser = error.message?.toLowerCase().includes("already");
-
-    if (isExistingUser) {
-      return redirect("/signin");
-    }
-
+  if(signUpData && signUpData.user) {
+    return { success: "User already exists. Please sign in instead." };
+  }
+  if(error) {
     return { error: error.message };
   }
 
@@ -104,7 +101,6 @@ const getUser = async () => {
   const {
     data
   } = await supabase.auth.getUserIdentities();
-  console.log("User identities data:", data?.identities[0].identity_data);
 
   return data?.identities[0].identity_data || null;
 }

@@ -44,17 +44,13 @@ const SignUpForm = () => {
 
   useEffect(() => {
     if (state?.error) {
-      if (state.error.includes("An account with this email already exists.")) {
-        toast.error("An account with this email already exists. Please sign in instead.");
-        return redirect("/signin");
-      } else {
         toast.error(state.error);
         return;
-      }
     }
 
     if (state?.success) {
       toast.info(state.success);
+      return redirect("/signin");
     }
   }, [state?.error, state?.success]);
 
