@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { createClient } from "@repo/supabase/server";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowLeft02Icon } from "@hugeicons/core-free-icons";
+import { redirect } from "next/navigation";
 
 export default async function ResetPasswordPage() {
   const supabase = await createClient();
@@ -12,8 +13,10 @@ export default async function ResetPasswordPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // If user already has an active session, let them update immediately
-  // Otherwise, show the request form to send a reset link.
+  if (user) {
+    redirect("/");
+  }
+
   return (
     <div className="flex min-h-svh flex-col items-center justify-center bg-background px-6 py-10">
       <div className="w-full max-w-md space-y-6 rounded-2xl border bg-card p-6 shadow-sm">

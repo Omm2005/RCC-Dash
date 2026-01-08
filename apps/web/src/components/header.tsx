@@ -19,7 +19,7 @@ export function SiteHeader() {
         <div className="ml-auto flex items-center gap-2">
           <Button variant="secondary" size='sm' className="text-sm font-medium min-w-8 duration-200 ease-linear" >
           <HugeiconsIcon icon={AddCircleIcon} />
-            <span>Quick Create</span>
+            <span>Quick Upload</span>
           </Button>
         </div>
       </div>
