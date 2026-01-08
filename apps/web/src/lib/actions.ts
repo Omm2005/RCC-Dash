@@ -85,7 +85,7 @@ const signUpWithPassword = async (
     },
   });
 
-  if(signUpData && signUpData.user) {
+  if(signUpData && signUpData.session) {
     return { success: "User already exists. Please sign in instead." };
   }
   if(error) {
@@ -121,7 +121,6 @@ const requestPasswordReset = async (
   if (error) {
     return { error: error.message };
   }
-
   return { success: "Check your email for the reset link." };
 };
 

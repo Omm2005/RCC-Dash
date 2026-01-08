@@ -83,7 +83,7 @@ const SignUpForm = () => {
                 <FormControl>
                   <Input
                     type="text"
-                    placeholder="How should we address you?"
+                    placeholder="How should we call you?"
                     autoComplete="name"
                     required
                     {...field}
