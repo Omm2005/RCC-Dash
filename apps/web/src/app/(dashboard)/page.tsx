@@ -34,16 +34,24 @@ export default async function Page() {
         <div className="items-center">
 
         
-        <div className="flex flex-col gap-20 items-center">
-          <div className="flex flex-row gap-20">
-            <BigNumber></BigNumber>
-            <BigNumber></BigNumber>
-          </div>
-          
-          <div className="flex flex-row gap-20">
-            <BigNumber></BigNumber>
-            <BigNumber></BigNumber>
-          </div>
+        <div className="flex flex-col w-full gap-20 ">
+           <div className="flex w-full gap-20">
+              <div className="flex-1">
+                <BigNumber />
+              </div>
+              <div className="flex-1">
+                <BigNumber />
+              </div>
+            </div>
+
+            <div className="flex w-full gap-20">
+              <div className="flex-1">
+                <BigNumber />
+              </div>
+              <div className="flex-1">
+                <BigNumber />
+              </div>
+            </div>
         
           <div className="w-full">
             <ChartLineMultiple></ChartLineMultiple>
