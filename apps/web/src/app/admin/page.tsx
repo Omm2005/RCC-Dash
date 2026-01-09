@@ -13,28 +13,10 @@ import { BigNumber } from "@/components/ui/kpi"
 import { DropdownMenuDemo } from "@/components/ui/drop-down"
 import { Button } from "@/components/ui/button"
 import { TextCard } from "@/components/ui/text-card"
-
+import { ImportButton } from "@/components/ui/import-button"
 import UploadArea from "@/components/ui/csvupload"
+import { EventForm } from "@/components/ui/event-form"
 
-const handleImport = async () => {
-  try {
-    const response = await fetch("api/import-data/event-attendance", {
-      method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        //send file over
-        body: JSON.stringify({ }), 
-    })
-
-    if (!response.ok){
-      throw new Error("Import failed")
-    }
-  } catch (error) {
-    console.error("Error: " + error);
-  }
-}
 
 export default async function AdminPage() {
   const supabase = await createClient();
@@ -68,9 +50,7 @@ export default async function AdminPage() {
                             <h3>Upload CSV File</h3>
                             <UploadArea></UploadArea>
                         </div>
-                    <div>
-                        <Button className="pl-10 pr-10" onClick={handleImport}>Import Data</Button>
-                    </div>
+                    <ImportButton></ImportButton>
                 </div> 
             <div>
         </div>
@@ -91,8 +71,8 @@ export default async function AdminPage() {
                         </div>
                     </div>
             </div>
-            
             </div>
+              <EventForm></EventForm>
             </div>
         </div>
       </div>
