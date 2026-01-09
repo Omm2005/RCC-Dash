@@ -36,9 +36,9 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={{
-            name: user!.display_name || "User",
+            name: user!.display_name || user!.name || user!.full_name ||"User",
             email: user?.email || "",
-            avatar:  ""
+            avatar:  user?.avatar_url || user!.picture || "",
         }} />
       </SidebarFooter>
     </Sidebar>
