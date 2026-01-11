@@ -6,8 +6,14 @@ def build_overview_payload(
     members_table: str = "public.members",
     attendance_table: str = "public.event_attendance",
 ):
-    """Build overview analytics payload"""
+    """
+    Build overview analytics payload for the dashboard.
     
+    Returns:
+        dict: Contains 'overview' with 'kpis' and 'members_over_time'
+    """
+    
+    # KPI metrics: total members, active members, active %, and 30-day growth rate
     kpis_sql = f"""
     WITH stats AS (
         SELECT 
@@ -29,6 +35,7 @@ def build_overview_payload(
     FROM stats s, growth g;
     """
     
+   # Monthly cumulative counts of registered and active members
     time_series_sql = f"""
     SELECT 
         TO_CHAR(date_series, 'YYYY-MM') AS period,
@@ -38,13 +45,16 @@ def build_overview_payload(
     ORDER BY date_series;
     """
     
+    # Execute queries and fetch results
     with conn.cursor() as cur:
+        
         cur.execute(kpis_sql)
         kpis_row = cur.fetchone()
         
         cur.execute(time_series_sql)
         time_series_rows = cur.fetchall()
     
+    # Format response to match API contract
     return {
         "overview": {
             "kpis": {
@@ -53,6 +63,13 @@ def build_overview_payload(
                 "active_members_pct": float(kpis_row["active_members_pct"]),
                 "registered_growth_last_30d_pct": float(kpis_row["registered_growth_last_30d_pct"])
             },
-            "members_over_time": [{"period": row["period"], "registered_members_cumulative": row["registered_members_cumulative"], "active_members_cumulative": row["active_members_cumulative"]} for row in time_series_rows]
+            "members_over_time": [
+                {
+                    "period": row["period"],
+                    "registered_members_cumulative": row["registered_members_cumulative"],
+                    "active_members_cumulative": row["active_members_cumulative"]
+                } 
+                for row in time_series_rows
+            ]
         }
     }
