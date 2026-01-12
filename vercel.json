@@ -1,0 +1,4 @@
+{
+  "installCommand": "bun install",
+  "buildCommand": "bunx turbo run build --filter=web..."
+}

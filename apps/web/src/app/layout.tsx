@@ -4,8 +4,8 @@ import { Space_Grotesk, Geist_Mono, Inter } from "next/font/google";
 
 //@ts-ignore
 import "../index.css";
-import Header from "@/components/header";
 import Providers from "@/components/providers";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -31,10 +31,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
-      <body className={`${spaceGrotesk.variable} ${geistMono.variable} antialiased`}>
-        <Providers>
+      <body className={`${spaceGrotesk.variable} ${geistMono.variable} antialiased bg-background text-foreground`}>
+            <SidebarProvider>
+        <Providers >
           {children}
         </Providers>
+            </SidebarProvider>
       </body>
     </html>
   );

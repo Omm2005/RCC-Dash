@@ -2,9 +2,9 @@
   "name": "server",
   "private": true,
   "scripts": {
-    "install": "python -m venv .venv && pip install -r requirements.txt",
-    "windows:install": "python -m venv .venv && .\\.venv\\Scripts\\pip install -r requirements.txt",
-    "dev": "python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000",
-    "start": "python -m uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    "install": "python3 -m venv .venv && .venv/bin/pip install -r requirements.txt",
+    "windows:install": "python -m venv .venv && .venv/Scripts/pip install -r requirements.txt",
+    "dev": "node scripts/run-uvicorn.js --reload --host 0.0.0.0 --port 8000",
+    "start": "node scripts/run-uvicorn.js --host 0.0.0.0 --port 8000"
   }
 }
