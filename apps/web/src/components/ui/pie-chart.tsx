@@ -2,6 +2,7 @@
 
 import { TrendingUp } from "lucide-react"
 import { ResponsiveContainer, LabelList, Pie, PieChart } from "recharts"
+import  ToggleBar  from "@/components/ui/toggle-bar"
 
 import {
   Card,
@@ -17,8 +18,6 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
-// ?Where does this ToggleBar come from? there is nothing like this in components/ui/toggle.tsx @codebyemily
-// import { ToggleBar } from "@/components/ui/toggle"
 
 export const description = "A pie chart with a label list"
 
@@ -60,13 +59,24 @@ export function ChartPieLabelList() {
   return (
     <ResponsiveContainer width="100%" height="100%">
     <Card className="flex flex-col h-full justify-between">
-      <CardHeader className="items-center pb-0">
+      <div>
+        <CardHeader className="items-center pb-0">
         <CardTitle>Pie Chart - Label List</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
-      {/* <ToggleBar></ToggleBar> */}
+      </div>
+      
+        <div className="flex justify-center">
+        <ToggleBar
+          options={[
+            { label: 'Chart 1', value: 'Chart 1' },
+            { label: 'Chart 2', value: 'Chart 2' },
+          ]}
+          onChange={(v) => console.log(v)}
+        />
+      </div>
 
-      <CardContent className="flex flex-1 pt-4">
+      <CardContent className="flex flex-1">
         <ChartContainer
           config={chartConfig}
           className="[&_.recharts-text]:fill-background mx-auto aspect-square max-h-[250px]"
