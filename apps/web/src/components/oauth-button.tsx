@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useTransition, type JSX } from "react";
 import { Loader2 } from "lucide-react";
 
 import { signInWithOAuth } from "@/lib/actions";

@@ -1,4 +1,6 @@
-import Header from '@/components/header';
+import { SiteHeader } from '@/components/header';
+import { AppSidebar } from '@/components/sidebar/app-sidebar';
+import { SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import React from 'react'
 
 type Props = {
@@ -7,10 +9,13 @@ type Props = {
 
 const layout = ({children}: Props) => {
   return (
-          <div className="grid grid-rows-[auto_1fr] h-svh">
-            <Header />
-            {children}
-          </div>
+    <>
+      <AppSidebar variant='inset' />
+        <SidebarInset>
+          <SiteHeader />
+          {children}
+        </SidebarInset>
+    </>
   )
 }
 

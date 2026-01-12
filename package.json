@@ -19,7 +19,9 @@
     "check-types": "turbo check-types",
     "dev:native": "turbo -F native dev",
     "dev:web": "turbo -F web dev",
-    "dev:server": "turbo -F server dev"
+    "dev:server": "turbo -F server dev",
+    "server:install": "cd apps/server && bun run install",
+    "server:install:windows": "cd apps/server && bun run windows:install"
   },
   "dependencies": {
     "@repo/env": "workspace:*",

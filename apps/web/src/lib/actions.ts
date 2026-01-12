@@ -9,6 +9,12 @@ export type AuthState = {
   success?: string;
 };
 
+const getBaseUrl = () => {
+  if (process.env.NEXT_PUBLIC_BASE_URL) return process.env.NEXT_PUBLIC_BASE_URL;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return "http://localhost:3000";
+};
+
 const signInWithPassword = async (
   _prevState: AuthState,
   formData: FormData,
@@ -65,19 +71,24 @@ const signUpWithPassword = async (
   formData: FormData,
 ): Promise<AuthState> => {
   const supabase = await createClient();
-  const data = {
+  const credentials = {
     email: formData.get("email") as string,
     password: formData.get("password") as string,
   };
-  const { data: signUpData, error } = await supabase.auth.signUp(data);
+  const displayName =
+    (formData.get("displayName") as string | null)?.trim() || undefined;
 
-  if (signUpData.user) {
-    const message ="An account with this email already exists.";
+  const { data: signUpData, error } = await supabase.auth.signUp({
+    ...credentials,
+    options: {
+      data: displayName ? { display_name: displayName } : undefined,
+    },
+  });
 
-    return { error: message };
+  if(signUpData && signUpData.session) {
+    return { success: "User already exists. Please sign in instead." };
   }
-  
-  if (error) {
+  if(error) {
     return { error: error.message };
   }
 
@@ -91,4 +102,72 @@ const signUpWithPassword = async (
   return redirect("/");
 };
 
-export { signInWithPassword, signInWithOAuth, signUpWithPassword, signOut };
+const requestPasswordReset = async (
+  _prevState: AuthState,
+  formData: FormData,
+): Promise<AuthState> => {
+  const supabase = await createClient();
+  const email = (formData.get("email") as string | null)?.trim();
+
+  if (!email) {
+    return { error: "Email is required" };
+  }
+
+  const redirectTo = `${getBaseUrl()}/api/auth/callback?next=/reset-password`;
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo,
+  });
+
+  if (error) {
+    return { error: error.message };
+  }
+  return { success: "Check your email for the reset link." };
+};
+
+const updatePassword = async (
+  _prevState: AuthState,
+  formData: FormData,
+): Promise<AuthState> => {
+  const supabase = await createClient();
+  const password = (formData.get("password") as string | null)?.trim();
+  const confirmPassword = (formData.get("confirmPassword") as string | null)?.trim();
+
+  if (!password) {
+    return { error: "Password is required" };
+  }
+
+  if (password.length < 8) {
+    return { error: "Password must be at least 8 characters." };
+  }
+
+  if (password !== confirmPassword) {
+    return { error: "Passwords do not match." };
+  }
+
+  const { error } = await supabase.auth.updateUser({ password });
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return { success: "Password updated. You can close this tab or continue." };
+};
+
+const getUser = async () => {
+  const supabase = await createClient();
+  const {
+    data
+  } = await supabase.auth.getUserIdentities();
+
+  return data?.identities[0].identity_data || null;
+}
+
+export {
+  signInWithPassword,
+  signInWithOAuth,
+  signUpWithPassword,
+  signOut,
+  getUser,
+  requestPasswordReset,
+  updatePassword,
+};

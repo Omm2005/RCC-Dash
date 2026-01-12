@@ -21,6 +21,7 @@ import { redirect } from "next/navigation";
 type SignUpValues = {
   email: string;
   password: string;
+  displayName: string;
 };
 
 const initialState: AuthState = {
@@ -37,22 +38,19 @@ const SignUpForm = () => {
     defaultValues: {
       email: "",
       password: "",
+      displayName: "",
     },
   });
 
   useEffect(() => {
     if (state?.error) {
-      if (state.error.includes("An account with this email already exists.")) {
-        toast.error("An account with this email already exists. Please sign in instead.");
-        return redirect("/signin");
-      } else {
         toast.error(state.error);
         return;
-      }
     }
 
     if (state?.success) {
       toast.info(state.success);
+      return redirect("/signin");
     }
   }, [state?.error, state?.success]);
 
@@ -75,6 +73,26 @@ const SignUpForm = () => {
           </div>
         </div>
         <div className="flex flex-col gap-6">
+          <FormField
+            control={form.control}
+            name="displayName"
+            rules={{ required: "Display name is required" }}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Display Name</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    placeholder="How should we call you?"
+                    autoComplete="name"
+                    required
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="email"

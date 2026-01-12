@@ -75,20 +75,6 @@ export default async function Page() {
         </div>
       </div>
       </div>
-    
-      {user ? (
-        <div className="flex flex-col items-center gap-1 text-sm text-neutral-700">
-          <p>
-            <span className="font-medium">Email:</span> {user.email}
-          </p>
-          <p className="break-all text-center">
-            <span className="font-medium">User ID:</span> {user.id}
-          </p>
-          <SignOutButton className="mt-4" />
-        </div>
-      ) : (
-        <p className="text-neutral-500">No user session found.</p>
-      )}
     </main>
   );
 }

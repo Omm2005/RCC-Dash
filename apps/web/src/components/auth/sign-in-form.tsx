@@ -91,18 +91,23 @@ const SignInForm = () => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+                <div className="flex justify-between items-center">
+                            {state?.error ? (
+            <p className="text-xs text-destructive w-fit" role="alert">
+              {state.error}
+            </p>
+          ) : <p />}
+                  <a href="/reset-password" className="underline flex justify-end text-end underline-offset-4 text-xs">
+              Forgot password?
+            </a>
+                </div>
               </FormItem>
             )}
           />
-          {state?.error && (
-            <p className="text-sm text-destructive" role="alert">
-              {state.error}
-            </p>
-          )}
           <FormSubmitButton className="w-full" pendingText="Signing in...">
             Sign In
           </FormSubmitButton>
+
         </div>
       </form>
     </Form>
