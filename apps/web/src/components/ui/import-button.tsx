@@ -1,5 +1,6 @@
 "use client"; 
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export const ImportButton = () => {
   const handleImport = async () => {
@@ -18,7 +19,8 @@ export const ImportButton = () => {
       throw new Error("Import failed")
     }
   } catch (error) {
-    console.error("Error: " + error);
+    console.log("Error importing data:", error)
+    toast.error("Error importing data");
   }
   };
 

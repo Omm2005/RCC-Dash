@@ -26,6 +26,7 @@
   "dependencies": {
     "@repo/env": "workspace:*",
     "dotenv": "catalog:",
+    "react-dropzone": "^14.3.8",
     "zod": "catalog:"
   },
   "devDependencies": {

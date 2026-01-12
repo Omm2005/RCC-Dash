@@ -17,7 +17,8 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
-import { ToggleBar } from "@/components/ui/toggle"
+// ?Where does this ToggleBar come from? there is nothing like this in components/ui/toggle.tsx @codebyemily
+// import { ToggleBar } from "@/components/ui/toggle"
 
 export const description = "A pie chart with a label list"
 
@@ -63,7 +64,7 @@ export function ChartPieLabelList() {
         <CardTitle>Pie Chart - Label List</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
-      <ToggleBar></ToggleBar>
+      {/* <ToggleBar></ToggleBar> */}
 
       <CardContent className="flex flex-1 pt-4">
         <ChartContainer
