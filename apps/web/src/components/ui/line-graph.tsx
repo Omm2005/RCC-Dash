@@ -1,7 +1,7 @@
 "use client"
 
 import { TrendingUp } from "lucide-react"
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
+import { CartesianGrid, Line, LineChart, XAxis, Legend } from "recharts"
 
 import {
   Card,
@@ -21,21 +21,21 @@ import {
 export const description = "A multiple line chart"
 
 const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
+  { month: "January", registered: 186, active: 80 },
+  { month: "February", registered: 305, active: 200 },
+  { month: "March", registered: 237, active: 120 },
+  { month: "April", registered: 73, active: 190 },
+  { month: "May", registered: 209, active: 130 },
+  { month: "June", registered: 214, active: 140 },
 ]
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  registered: {
+    label: "Registered",
     color: "var(--chart-1)",
   },
-  mobile: {
-    label: "Mobile",
+  active: {
+    label: "Active",
     color: "var(--chart-2)",
   },
 } satisfies ChartConfig
@@ -66,17 +66,20 @@ export function ChartLineMultiple() {
               tickFormatter={(value) => value.slice(0, 3)}
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+            <Legend /> 
             <Line
-              dataKey="desktop"
+              dataKey="registered"
               type="monotone"
-              stroke="var(--color-desktop)"
+              name={chartConfig.registered.label} 
+              stroke={chartConfig.registered.color}
               strokeWidth={2}
               dot={false}
             />
             <Line
-              dataKey="mobile"
+              dataKey="active"
               type="monotone"
-              stroke="var(--color-mobile)"
+              name={chartConfig.active.label} 
+              stroke={chartConfig.active.color}
               strokeWidth={2}
               dot={false}
             />
