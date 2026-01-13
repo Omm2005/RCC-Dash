@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useTheme } from "next-themes"
+import { usePathname } from "next/navigation"
 
 type ExportDashboardButtonProps = {
   targetId: string
@@ -98,9 +99,17 @@ export default function ExportDashboardButton({
   const [isExporting, setIsExporting] = useState(false)
   const { theme, systemTheme } = useTheme()
   const resolvedTheme = theme === "system" ? systemTheme : theme
+  const pathname = usePathname()
 
   const handleExport = async (format: "pdf" | "png") => {
     const target = document.getElementById(targetId)
+      if(pathname?.includes("/admin")) {
+    toast.error("Exporting is not available in the admin panel.", {
+      description: "Please navigate to the main dashboard to export data.",
+    })
+    return null
+  }
+
     if (!target) {
       toast.error("Unable to find dashboard content.")
       return

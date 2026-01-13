@@ -24,7 +24,8 @@ export async function AppSidebar({
   isAdmin: boolean
   role?: string | null
 }) {
-  const user = await getUser()
+  // !FUCKING TYPE ISSUE! FUCKING FUCKER TYPE!!
+  const user: any = await getUser()
   const displayName = user?.display_name || user?.full_name || user?.name || "User"
   const email = user?.email || ""
   const avatar = user?.avatar_url || user?.picture || ""

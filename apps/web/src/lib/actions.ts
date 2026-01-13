@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@repo/supabase/server";
 import type { Provider } from "@repo/supabase/types";
 import { revalidatePath } from "next/cache";
+import { ensureProfileExists } from "@/lib/profile";
 
 export type AuthState = {
   error?: string;
@@ -20,14 +21,20 @@ const signInWithPassword = async (
   formData: FormData,
 ): Promise<AuthState> => {
   const supabase = await createClient();
-  const data = {
+  const credentials = {
     email: formData.get("email") as string,
     password: formData.get("password") as string,
   };
-  const { error } = await supabase.auth.signInWithPassword(data);
+  const { data: signInData, error } =
+    await supabase.auth.signInWithPassword(credentials);
 
   if (error) {
     return { error: error.message };
+  }
+
+  const profileError = await ensureProfileExists(supabase, signInData.user);
+  if (profileError) {
+    return { error: profileError };
   }
 
   return redirect("/");

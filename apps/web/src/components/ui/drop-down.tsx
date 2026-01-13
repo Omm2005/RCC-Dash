@@ -14,7 +14,7 @@ import {
 export function DropdownMenuDemo() {
   // state to track selected option
   const [selected, setSelected] = useState("Select Data Type")
-  const buttonWidth = "w-full sm:w-56"
+  const buttonWidth = "w-full"
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

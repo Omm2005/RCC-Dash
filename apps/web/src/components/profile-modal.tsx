@@ -207,21 +207,21 @@ export function ProfileModal({
                 onDrop={(files) => void handleAvatarDrop(files)}
                 onError={(error) => toast.error(error.message)}
                 disabled={isUploading}
-                className="border-dashed p-4"
+                className="border-dashed p-4 whitespace-normal"
               >
                 <div className="flex w-full items-center gap-3 text-left">
-                  <div className="flex size-12 items-center justify-center overflow-hidden rounded-full bg-muted">
+                  <div className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted">
                     {avatarPreview ? (
                       <img
                         src={avatarPreview}
                         alt="Avatar preview"
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-cover rounded-full aspect-square"
                       />
                     ) : (
                       <UploadIcon size={20} className="text-muted-foreground" />
                     )}
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium">
                       {isUploading ? "Uploading avatar..." : "Drag and drop an image"}
                     </p>
