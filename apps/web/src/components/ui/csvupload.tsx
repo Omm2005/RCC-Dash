@@ -11,8 +11,8 @@ const UploadArea = () => {
   return (
     <Dropzone onDrop={handleDrop} onError={console.error} src={files}>
       <DropzoneEmptyState>
-        <div className="flex w-full items-center gap-4 p-8">
-          <div className="flex size-16 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+        <div className="flex w-full flex-col items-start gap-3 p-6 text-left sm:flex-row sm:items-center sm:gap-4 sm:p-8">
+          <div className="flex size-14 items-center justify-center rounded-lg bg-muted text-muted-foreground sm:size-16">
             <UploadIcon size={24} />
           </div>
           <div className="text-left">

@@ -81,7 +81,10 @@ const signUpWithPassword = async (
   const { data: signUpData, error } = await supabase.auth.signUp({
     ...credentials,
     options: {
-      data: displayName ? { display_name: displayName } : undefined,
+      data: {
+        role: "member",
+        ...(displayName ? { display_name: displayName } : {}),
+      },
     },
   });
 
@@ -90,6 +93,19 @@ const signUpWithPassword = async (
   }
   if(error) {
     return { error: error.message };
+  }
+
+  if (signUpData.user) {
+    const { error: profileError } = await supabase.from("profiles").upsert(
+      {
+        user_id: signUpData.user.id,
+        role: "member",
+      },
+      { onConflict: "user_id" },
+    );
+    if (profileError) {
+      return { error: profileError.message };
+    }
   }
 
   if (!signUpData.session) {
@@ -162,12 +178,34 @@ const getUser = async () => {
   return data?.identities[0].identity_data || null;
 }
 
+const getUserRole = async () => {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return null;
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("user_id", user.id)
+    .single();
+
+  if (error) {
+    return null;
+  }
+
+  return data?.role ?? null;
+}
+
 export {
   signInWithPassword,
   signInWithOAuth,
   signUpWithPassword,
   signOut,
   getUser,
+  getUserRole,
   requestPasswordReset,
   updatePassword,
 };

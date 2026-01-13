@@ -7,6 +7,7 @@ import {
   CreditCard,
   LogOut,
   Sparkles,
+  User,
 } from "lucide-react"
 
 import {
@@ -43,6 +44,7 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const showFallbackIcon = !user.avatar
 
   return (
     <SidebarMenu>
@@ -54,9 +56,17 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
+                {user.avatar ? (
+                  <AvatarImage src={user.avatar} alt={user.name} />
+                ) : null}
                 <AvatarFallback className="rounded-lg">
-                  {user.name != 'User' ? (user.name.split(" ")[0][0] + user.name.split(" ")[1]?.[0]) : "OS"}
+                  {showFallbackIcon ? (
+                    <User className="h-4 w-4" />
+                  ) : user.name != "User" ? (
+                    user.name.split(" ")[0][0] + user.name.split(" ")[1]?.[0]
+                  ) : (
+                    "OS"
+                  )}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -75,9 +85,15 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
+                  {user.avatar ? (
+                    <AvatarImage src={user.avatar} alt={user.name} />
+                  ) : null}
                   <AvatarFallback className="rounded-lg">
-                    {user.name.split(" ")[0][0] + user.name.split(" ")[1]?.[0]} 
+                    {showFallbackIcon ? (
+                      <User className="h-4 w-4" />
+                    ) : (
+                      user.name.split(" ")[0][0] + user.name.split(" ")[1]?.[0]
+                    )}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">

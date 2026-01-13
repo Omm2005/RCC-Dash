@@ -25,7 +25,7 @@ export const ImportButton = () => {
   };
 
   return (
-    <Button onClick={handleImport} className="pl-10 pr-10">
+    <Button onClick={handleImport} className="w-full sm:w-auto sm:px-10">
       Import Data
     </Button>
   );

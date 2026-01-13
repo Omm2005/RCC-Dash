@@ -1,9 +1,5 @@
-import { ResponsiveContainer } from "recharts";
-import SignOutButton from "@/components/SignOutButton";
 import { createClient } from "@repo/supabase/server";
 import { redirect } from "next/navigation";
-import { CardContent } from "@/components/ui/card";
-import { ChartBarDefault } from "@/components/ui/bar-chart";
 import { ChartLineMultiple } from "@/components/ui/line-graph"
 import { ChartPieLabelList } from "@/components/ui/pie-chart"
 import { ChartBarStacked } from "@/components/ui/stacked-bar-chart"
@@ -19,61 +15,39 @@ export default async function Page() {
   if (!user) {
     return redirect("/signin");
   }
-
   return (
-    <main className="flex h-full w-full items-center flex-col justify-center gap-4 p-32">
-      <div className="">
-        
-        <div className="flex flex-col mb-5 gap-5">
-          <h1 className="text-3xl font-semibold">RCC Engagement Dashboard</h1>
-          <h3>
-            Overview & Growth
-          </h3>
-        </div>
-
-        <div className="items-center">
-
-        
-        <div className="flex flex-col w-full gap-20 ">
-           <div className="flex w-full gap-20">
-              <div className="flex-1">
-                <BigNumber />
-              </div>
-              <div className="flex-1">
-                <BigNumber />
-              </div>
-            </div>
-
-            <div className="flex w-full gap-20">
-              <div className="flex-1">
-                <BigNumber />
-              </div>
-              <div className="flex-1">
-                <BigNumber />
-              </div>
-            </div>
-        
-          <div className="w-full">
-            <ChartLineMultiple></ChartLineMultiple>
+    <main className="flex w-full flex-col gap-6 p-4 sm:p-6 lg:p-10">
+      <div className="w-full">
+        <div id="dashboard-export" className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <h1 className="text-2xl font-semibold sm:text-3xl">
+              RCC Engagement Dashboard
+            </h1>
+            <h3 className="text-sm text-muted-foreground sm:text-base">
+              Overview & Growth
+            </h3>
           </div>
-          
-          <div className="w-full flex justify-center">
-          <div className="flex gap-8 w-full ">
-            <div className="flex-[1] h-full">
+          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+            <BigNumber />
+            <BigNumber />
+            <BigNumber />
+            <BigNumber />
+          </div>
+          <div className="w-full">
+            <ChartLineMultiple />
+          </div>
+          <div className="grid gap-6 lg:grid-cols-3">
+            <div className="lg:col-span-1">
               <ChartPieLabelList />
             </div>
-            <div className="flex-[2] h-full">
+            <div className="lg:col-span-2">
               <ChartBarStacked />
             </div>
           </div>
-        </div>
-
           <div className="w-full">
-            <ChartBarHorizontal>
-            </ChartBarHorizontal>
+            <ChartBarHorizontal />
           </div>
         </div>
-      </div>
       </div>
     </main>
   );

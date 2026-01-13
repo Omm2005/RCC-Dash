@@ -13,15 +13,17 @@ import {
 
 export function DropdownMenuDemo() {
   // state to track selected option
-    const [selected, setSelected] = useState("Select Data Type")
-    const buttonWidth = "w-56"
+  const [selected, setSelected] = useState("Select Data Type")
+  const buttonWidth = "w-full sm:w-56"
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className={buttonWidth}>{selected}</Button>
+        <Button variant="outline" className={buttonWidth}>
+          {selected}
+        </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="w-56" align="start">
+      <DropdownMenuContent align="start">
         <DropdownMenuLabel>To import:</DropdownMenuLabel>
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={() => setSelected("Members")}>

@@ -13,10 +13,10 @@ import {
 } from "@/components/ui/sidebar"
 import { getUser } from "@/lib/actions"
 import { NavMain } from "./nav-main"
-import { Layout } from "lucide-react"
 import { LayoutDashboard, User } from "@hugeicons/core-free-icons"
+import Exports from "../exports"
 
-export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export async function AppSidebar({ isAdmin, ...props }: React.ComponentProps<typeof Sidebar> & { isAdmin: boolean }) {
     const user = await getUser();
   return (
     <Sidebar collapsible="offExamples" {...props}>
@@ -48,7 +48,8 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
         ]}
         />
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="flex flex-col gap-2" >
+        <Exports isAdmin={isAdmin} sidebar classNames="md:hidden" />
         <NavUser user={{
             name: user!.display_name || user!.name || user!.full_name ||"User",
             email: user?.email || "",

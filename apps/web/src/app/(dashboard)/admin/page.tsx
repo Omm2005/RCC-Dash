@@ -18,53 +18,49 @@ export default async function AdminPage() {
   }
 
   return (
-    <main className="flex h-full w-full items-center flex-col justify-center gap-4 p-32">
-      <div className="">
-        
-        <div className="flex flex-col mb-5 gap-5">
-          <h1 className="text-3xl font-semibold">Admin Page</h1>
-        </div>
-            <div>
-                <div className="flex flex-col gap-10">
-                    <div className="">
-                        <h2 className="font-bold">Import Data</h2>
-                    </div>
-                    <div className="flex flex-row gap-20">
-                        <div className="flex flex-col gap-5">
-                            <h3>What are you importing?</h3>
-                            <DropdownMenuDemo></DropdownMenuDemo>
-                        </div>
-
-                        <div className="flex flex-col gap-5">
-                            <h3>Upload CSV File</h3>
-                            <UploadArea></UploadArea>
-                        </div>
-                    <ImportButton></ImportButton>
-                </div> 
-            <div>
-        </div>
-
-            <div className="flex flex-col w-full gap-20 ">
-                <div className="flex flex-row gap-20">
-                    <div className="flex flex-[1] flex-col gap-5">
-                        <h3 className="font-bold" >Validation Summary</h3>
-                        <div className="flex-1">
-                            <TextCard desc={"Rows Valid: \n\n Rows with Errors:"} />
-                        </div>
-                    </div>
-
-                    <div className="flex flex-[1] flex-col gap-5">
-                        <h3 className="font-bold" >Success Summary</h3>
-                        <div className="flex-1">
-                            <TextCard desc={"Rows Imported: \n\n Rows Skipped:"} />
-                        </div>
-                    </div>
-            </div>
-            </div>
-            <EventForm />
-            </div>
-        </div>
+    <main className="flex w-full flex-col gap-8 p-4 sm:p-6 lg:p-10">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-2xl font-semibold sm:text-3xl">Admin Page</h1>
       </div>
+
+      <section className="flex flex-col gap-6">
+        <h2 className="text-lg font-semibold">Import Data</h2>
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,auto)]">
+          <div className="flex flex-col gap-3">
+            <h3 className="text-sm font-medium text-muted-foreground">
+              What are you importing?
+            </h3>
+            <DropdownMenuDemo />
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <h3 className="text-sm font-medium text-muted-foreground">
+              Upload CSV File
+            </h3>
+            <UploadArea />
+          </div>
+
+          <div className="flex w-full items-end">
+            <ImportButton />
+          </div>
+        </div>
+      </section>
+
+      <section className="grid gap-6 lg:grid-cols-2">
+        <div className="flex flex-col gap-3">
+          <h3 className="font-semibold">Validation Summary</h3>
+          <TextCard desc={"Rows Valid: \n\n Rows with Errors:"} />
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <h3 className="font-semibold">Success Summary</h3>
+          <TextCard desc={"Rows Imported: \n\n Rows Skipped:"} />
+        </div>
+      </section>
+
+      <section>
+        <EventForm />
+      </section>
     </main>
   );
 }
