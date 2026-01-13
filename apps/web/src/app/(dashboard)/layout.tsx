@@ -14,7 +14,7 @@ const layout = async ({children}: Props) => {
 
   return (
     <>
-      <AppSidebar variant='inset' isAdmin={isAdmin} />
+      <AppSidebar variant='inset' isAdmin={isAdmin} role={role} />
         <SidebarInset>
           <SiteHeader isAdmin={isAdmin} />
           {children}

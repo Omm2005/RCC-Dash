@@ -169,13 +169,61 @@ const updatePassword = async (
   return { success: "Password updated. You can close this tab or continue." };
 };
 
+const updateProfile = async (
+  _prevState: AuthState,
+  formData: FormData,
+): Promise<AuthState> => {
+  const supabase = await createClient();
+  const displayName = (formData.get("displayName") as string | null)?.trim();
+  const avatarUrl = (formData.get("avatarUrl") as string | null)?.trim();
+
+  if (!displayName) {
+    return { error: "Display name is required." };
+  }
+
+  if (avatarUrl) {
+    try {
+      new URL(avatarUrl);
+    } catch {
+      return { error: "Avatar URL must be a valid URL." };
+    }
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    data: {
+      display_name: displayName,
+      avatar_url: avatarUrl ? avatarUrl : null,
+    },
+  });
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/", "layout");
+  return { success: "Profile updated." };
+};
+
 const getUser = async () => {
   const supabase = await createClient();
   const {
-    data
-  } = await supabase.auth.getUserIdentities();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  return data?.identities[0].identity_data || null;
+  if (!user) {
+    return null;
+  }
+
+  const identityData = user.identities?.[0]?.identity_data ?? {};
+  const metadata = user.user_metadata ?? {};
+
+  return {
+    ...identityData,
+    ...metadata,
+    id: user.id,
+    email: user.email ?? "",
+    created_at: user.created_at ?? null,
+  };
 }
 
 const getUserRole = async () => {
@@ -206,6 +254,7 @@ export {
   signOut,
   getUser,
   getUserRole,
+  updateProfile,
   requestPasswordReset,
   updatePassword,
 };

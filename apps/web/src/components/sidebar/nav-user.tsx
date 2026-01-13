@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import {
   BadgeCheck,
   Bell,
@@ -33,18 +34,24 @@ import {
 import { ThemeSwitcher } from "../theme-switcher"
 import { signOut } from "@/lib/actions"
 import { toast } from "sonner"
+import { ProfileModal } from "@/components/profile-modal"
 
 export function NavUser({
   user,
+  role,
 }: {
   user: {
+    id?: string
     name: string
     email: string
     avatar: string
+    joinedAt?: string | null
   }
+  role?: string | null
 }) {
   const { isMobile } = useSidebar()
   const showFallbackIcon = !user.avatar
+  const [profileOpen, setProfileOpen] = useState(false)
 
   return (
     <SidebarMenu>
@@ -111,9 +118,9 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => setProfileOpen(true)}>
                 <BadgeCheck />
-                Account
+                Profile
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCard />
@@ -136,6 +143,12 @@ export function NavUser({
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <ProfileModal
+          user={user}
+          role={role}
+          open={profileOpen}
+          onOpenChange={setProfileOpen}
+        />
       </SidebarMenuItem>
     </SidebarMenu>
   )

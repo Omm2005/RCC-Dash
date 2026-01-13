@@ -16,8 +16,20 @@ import { NavMain } from "./nav-main"
 import { LayoutDashboard, User } from "@hugeicons/core-free-icons"
 import Exports from "../exports"
 
-export async function AppSidebar({ isAdmin, ...props }: React.ComponentProps<typeof Sidebar> & { isAdmin: boolean }) {
-    const user = await getUser();
+export async function AppSidebar({
+  isAdmin,
+  role,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & {
+  isAdmin: boolean
+  role?: string | null
+}) {
+  const user = await getUser()
+  const displayName = user?.display_name || user?.full_name || user?.name || "User"
+  const email = user?.email || ""
+  const avatar = user?.avatar_url || user?.picture || ""
+  const joinedAt = user?.created_at || null
+  const userId = user?.id
   return (
     <Sidebar collapsible="offExamples" {...props}>
       <SidebarHeader>
@@ -51,10 +63,12 @@ export async function AppSidebar({ isAdmin, ...props }: React.ComponentProps<typ
       <SidebarFooter className="flex flex-col gap-2" >
         <Exports isAdmin={isAdmin} sidebar classNames="md:hidden" />
         <NavUser user={{
-            name: user!.display_name || user!.name || user!.full_name ||"User",
-            email: user?.email || "",
-            avatar:  user?.avatar_url || user!.picture || "",
-        }} />
+            id: userId,
+            name: displayName,
+            email,
+            avatar,
+            joinedAt,
+        }} role={role} />
       </SidebarFooter>
     </Sidebar>
   )
