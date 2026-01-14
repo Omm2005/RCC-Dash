@@ -1,17 +1,6 @@
-import React from 'react'
-import { ResponsiveContainer } from "recharts";
-import SignOutButton from "@/components/SignOutButton";
 import { createClient } from "@repo/supabase/server";
 import { redirect } from "next/navigation";
-import { CardContent } from "@/components/ui/card";
-import { ChartBarDefault } from "@/components/ui/bar-chart";
-import { ChartLineMultiple } from "@/components/ui/line-graph"
-import { ChartPieLabelList } from "@/components/ui/pie-chart"
-import { ChartBarStacked } from "@/components/ui/stacked-bar-chart"
-import { ChartBarHorizontal } from "@/components/ui/ChartBarHorizontal";
-import { BigNumber } from "@/components/ui/kpi"
 import { DropdownMenuDemo } from "@/components/ui/drop-down"
-import { Button } from "@/components/ui/button"
 import { TextCard } from "@/components/ui/text-card"
 import { ImportButton } from "@/components/ui/import-button"
 import UploadArea from "@/components/ui/csvupload"
@@ -72,7 +61,7 @@ export default async function AdminPage() {
                     </div>
             </div>
             </div>
-              <EventForm></EventForm>
+            <EventForm />
             </div>
         </div>
       </div>

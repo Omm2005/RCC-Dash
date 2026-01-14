@@ -12,6 +12,9 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { getUser } from "@/lib/actions"
+import { NavMain } from "./nav-main"
+import { Layout } from "lucide-react"
+import { LayoutDashboard, User } from "@hugeicons/core-free-icons"
 
 export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const user = await getUser();
@@ -21,18 +24,29 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
+              className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
-              <a href="#">
                 {/* <IconInnerShadowTop className="!size-5" /> */}
                 <span className="text-base font-semibold">RCC SJSU.</span>
-              </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
+        <NavMain 
+        items={[
+          {
+            title: 'Dashboard',
+            icon: LayoutDashboard,
+            url: '/'
+          },
+          {
+            title: 'Admin',
+            icon: User,
+            url: '/admin'
+          }
+        ]}
+        />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={{

@@ -20,7 +20,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "catalog:",
-    "framer-motion": "^12.24.10",
     "lucide-react": "^0.546.0",
     "motion": "^12.25.0",
     "next": "^16.1.1",

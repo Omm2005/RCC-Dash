@@ -31,7 +31,7 @@ export default function ToggleBar({
   };
 
   return (
-    <div className="relative flex w-fit rounded-full bg-gray-200 p-1">
+    <div className="relative flex w-fit rounded-full bg-muted p-1">
       {options.map(option => {
         const isActive = option.value === activeValue;
 
@@ -49,15 +49,15 @@ export default function ToggleBar({
                   stiffness: 400,
                   damping: 30,
                 }}
-                className="absolute inset-0 rounded-full bg-white shadow"
+                className="absolute inset-0 rounded-full bg-accent shadow"
               />
             )}
 
             <span
               className={`relative z-10 transition-colors ${
                 isActive
-                  ? 'text-black'
-                  : 'text-gray-500 hover:text-black'
+                  ? 'text-foreground'
+                  : 'text-muted-foreground hover:text-muted-foreground'
               }`}
             >
               {option.label}

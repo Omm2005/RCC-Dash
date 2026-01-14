@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/sidebar"
 import { ThemeSwitcher } from "../theme-switcher"
 import { signOut } from "@/lib/actions"
+import { toast } from "sonner"
 
 export function NavUser({
   user,
@@ -87,7 +88,7 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => toast.info('Just Kidding')}>
                 <Sparkles />
                 Upgrade to Pro
               </DropdownMenuItem>

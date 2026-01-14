@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, type Transition } from 'motion/react'
 
 type SidebarIconProps = {
   open: boolean
@@ -8,7 +8,7 @@ type SidebarIconProps = {
   className?: string
 }
 
-const ICON_TRANSITION: import('framer-motion').Transition = { type: 'spring', stiffness: 420, damping: 32 }
+const ICON_TRANSITION: Transition = { type: 'spring', stiffness: 420, damping: 32 }
 
 const SidebarIcon = ({ open, size = 24, className }: SidebarIconProps) => {
   const verticalX = open ? 14.5 : 9.5
