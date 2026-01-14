@@ -9,11 +9,13 @@ from fastapi.middleware.cors import CORSMiddleware
 ENV_PATH = Path(__file__).resolve().parents[1] / ".env"  # -> apps/server/.env
 load_dotenv(dotenv_path=ENV_PATH, override=True)
 
-from app.api.import_event_info import router as import_router  # noqa: E402
+from app.api.import_event_info import router as import_router 
+from app.routes.analytics import router as analytics_router
 
 app = FastAPI()
 
 app.include_router(import_router)
+app.include_router(analytics_router)
 
 app.add_middleware(
     CORSMiddleware,

@@ -1,6 +1,12 @@
 import { createClient } from "@repo/supabase/server";
 import { redirect } from "next/navigation";
 import AdminImportPanel from "@/components/admin/AdminImportPanel";
+import { DropdownMenuDemo } from "@/components/ui/drop-down"
+import { TextCard } from "@/components/ui/text-card"
+import { ImportButton } from "@/components/ui/import-button"
+import UploadArea from "@/components/ui/csvupload"
+import { EventForm } from "@/components/ui/event-form"
+
 
 export default async function AdminPage() {
   const supabase = await createClient();

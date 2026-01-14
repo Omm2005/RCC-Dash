@@ -70,7 +70,7 @@ export function EventForm( { value, onChange }: EventFormProps) {
 
   return (
     <div className="flex justify-center items-start mt-12">
-      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+      <div className="w-full max-w-md p-6 bg-background rounded-lg shadow-md">
         <Form {...form}>
           <h2 className="text-2xl font-semibold mb-6 text-center">Event Form</h2>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
