@@ -24,7 +24,7 @@ export async function AppSidebar({
   isAdmin: boolean
   role?: string | null
 }) {
-  // !FUCKING TYPE ISSUE! FUCKING FUCKER TYPE!!
+  //! Type issue! TODO: fix later
   const user: any = await getUser()
   const displayName = user?.display_name || user?.full_name || user?.name || "User"
   const email = user?.email || ""
