@@ -1,31 +1,21 @@
 "use client"; 
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 
-export const ImportButton = () => {
-  const handleImport = async () => {
-    try {
-    const response = await fetch("api/import-data/event-attendance", {
-      method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+type ImportButtonProps = {
+  onClick: () => void;
+  disabled?: boolean;
+}
 
-        //send file over
-        body: JSON.stringify({ }), 
-    })
-
-    if (!response.ok){
-      throw new Error("Import failed")
-    }
-  } catch (error) {
-    console.log("Error importing data:", error)
-    toast.error("Error importing data");
-  }
-  };
-
+export function ImportButton({ onClick, disabled }: ImportButtonProps) {
   return (
-    <Button onClick={handleImport} className="pl-10 pr-10">
+    <Button 
+    onClick={() => {
+      console.log("ImportButton clicked");
+      onClick();
+    }}
+      disabled={disabled}
+      className="pl-10 pr-10"
+    >
       Import Data
     </Button>
   );
