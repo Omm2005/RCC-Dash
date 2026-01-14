@@ -8,11 +8,9 @@ def build_mission_payload(
     events_table: str = "public.events",
     attendance_table: str = "public.event_attendance",
 ):
-    """Build mission analytics payload - member demographics and event diversity"""
+    """Mission analytics: member demographics + event diversity"""
 
-    # Helper SQL snippet to normalize category labels
-    # - maps NULL/blank to Other/Unknown
-    # - maps "Unknown/other" to "Other/Unknown"
+    # Normalize major_category values to a single canonical label
     norm_major_category_sql = """
         COALESCE(
           NULLIF(
@@ -26,7 +24,7 @@ def build_mission_payload(
         )
     """
 
-    # Distribution of members by major category
+    # Count members by major category
     major_dist_sql = f"""
     SELECT
         {norm_major_category_sql} AS major_category,
@@ -36,7 +34,7 @@ def build_mission_payload(
     ORDER BY members DESC;
     """
 
-    # Distribution of members by class year (unchanged)
+    # Count members by class year
     class_year_sql = f"""
     SELECT 
         COALESCE(NULLIF(class_year, ''), 'Other/Unknown') AS class_year,
@@ -54,10 +52,7 @@ def build_mission_payload(
         END;
     """
 
-    # Major category breakdown for top events
-    # NOTE:
-    # - total_attendees counts DISTINCT attendee_email (includes non-members)
-    # - segments are based on member records (member_email join), so segments may sum < total_attendees
+    # Get top events by total attendance
     event_diversity_sql = f"""
     WITH event_attendance_counts AS (
         SELECT 
@@ -72,6 +67,7 @@ def build_mission_payload(
         ORDER BY total_attendees DESC
         LIMIT 10
     ),
+    -- Break down member majors per event
     event_major_breakdown AS (
         SELECT 
             a.event_id,
@@ -104,6 +100,7 @@ def build_mission_payload(
     ORDER BY eac.total_attendees DESC, emb.count DESC;
     """
 
+    # Run all mission queries
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute(major_dist_sql)
         major_dist = cur.fetchall()
@@ -114,7 +111,7 @@ def build_mission_payload(
         cur.execute(event_diversity_sql)
         event_rows = cur.fetchall()
 
-    # Group event diversity by event_id
+    # Group event rows into API response format
     events_dict = {}
     for row in event_rows:
         event_id = str(row["event_id"])
@@ -134,6 +131,7 @@ def build_mission_payload(
             "count": row["count"]
         })
 
+    # Return mission payload 
     return {
         "mission": {
             "major_category_distribution": [
