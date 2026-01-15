@@ -9,6 +9,7 @@ import { ChartPieLabelList } from "@/components/ui/pie-chart"
 import { ChartBarStacked } from "@/components/ui/stacked-bar-chart"
 import { ChartBarHorizontal } from "@/components/ui/ChartBarHorizontal";
 import { BigNumber } from "@/components/ui/kpi"
+import { RetentionDistributionChart } from "@/components/ui/retention-distribution"
 
 export default async function Page() {
   const supabase = await createClient();
@@ -36,6 +37,10 @@ export default async function Page() {
         
         <div className="flex flex-col w-full gap-20 ">
            <div className="flex w-full gap-20">
+              
+              <div className="flex-1">
+                <BigNumber />
+              </div>
               <div className="flex-1">
                 <BigNumber />
               </div>
@@ -44,15 +49,6 @@ export default async function Page() {
               </div>
             </div>
 
-            <div className="flex w-full gap-20">
-              <div className="flex-1">
-                <BigNumber />
-              </div>
-              <div className="flex-1">
-                <BigNumber />
-              </div>
-            </div>
-        
           <div className="w-full">
             <ChartLineMultiple></ChartLineMultiple>
           </div>
@@ -68,12 +64,12 @@ export default async function Page() {
           </div>
         </div>
 
-          <div className="w-full">
-            <ChartBarHorizontal>
-            </ChartBarHorizontal>
-          </div>
+        <RetentionDistributionChart></RetentionDistributionChart>
+
         </div>
+
       </div>
+
       </div>
     </main>
   );

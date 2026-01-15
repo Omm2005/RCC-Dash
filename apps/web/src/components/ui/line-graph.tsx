@@ -1,7 +1,7 @@
 "use client"
 
 import { TrendingUp } from "lucide-react"
-import { CartesianGrid, Line, LineChart, XAxis, Legend } from "recharts"
+import { CartesianGrid, Line, LineChart, XAxis, YAxis, Legend } from "recharts"
 
 import {
   Card,
@@ -65,6 +65,17 @@ export function ChartLineMultiple() {
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                label={{
+                  value: "Member Count",
+                  angle: -90,
+                  position: "insideLeft",
+                  offset: -5,
+                }}
+              />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Legend /> 
             <Line

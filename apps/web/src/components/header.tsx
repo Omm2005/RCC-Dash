@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { AddCircleIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
+import Link from 'next/link'
 
 export function SiteHeader() {
   return (
@@ -16,6 +17,12 @@ export function SiteHeader() {
           className="mx-3 self-center data-[orientation=vertical]:h-6 my-auto data-[orientation=vertical]:w-px"
         />
         <h1 className="text-base font-semibold tracking-tight">RCC Dashboard</h1>
+        <div className="ml-auto flex items-center gap-2">
+          <Button variant="secondary" size='sm' className="text-sm font-medium min-w-8 duration-200 ease-linear hover:bg-gray-200" >
+          <HugeiconsIcon icon={AddCircleIcon} />
+            <Link href="/admin">Quick Upload</Link>
+          </Button>
+        </div>
       </div>
     </header>
   )
