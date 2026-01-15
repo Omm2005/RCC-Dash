@@ -1,5 +1,4 @@
-from psycopg import Connection
-from psycopg.rows import dict_row
+from psycopg2.extensions import connection as Connection
 
 BUCKETS = ["0", "1", "2", "3", "4+"]
 
@@ -98,7 +97,7 @@ def build_retention_payload(
     GROUP BY major_category, events_attended_bucket;
     """
 
-    with conn.cursor(row_factory=dict_row) as cur:
+    with conn.cursor() as cur:
         cur.execute(overall_sql)
         overall_rows = cur.fetchall()
         cur.execute(by_major_sql)

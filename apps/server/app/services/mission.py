@@ -1,5 +1,4 @@
-from psycopg import Connection
-from psycopg.rows import dict_row
+from psycopg2.extensions import connection as Connection
 
 def build_mission_payload(
     conn: Connection,
@@ -101,7 +100,7 @@ def build_mission_payload(
     """
 
     # Run all mission queries
-    with conn.cursor(row_factory=dict_row) as cur:
+    with conn.cursor() as cur:
         cur.execute(major_dist_sql)
         major_dist = cur.fetchall()
 
