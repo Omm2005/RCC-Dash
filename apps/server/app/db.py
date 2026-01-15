@@ -1,27 +1,26 @@
-# This file connects to the supabase db to access tables for analytics
-
 import os
 from contextlib import contextmanager
 
 from dotenv import load_dotenv
-from psycopg import Connection
-from psycopg.rows import dict_row
+import psycopg2
+from psycopg2.extras import RealDictCursor
 
 load_dotenv()
 
-# This function retrieves the database URL from environment variables
 def _get_database_url() -> str:
     db_url = os.getenv("DATABASE_URL")
     if not db_url:
         raise RuntimeError("DATABASE_URL is not set")
     return db_url
 
-# THe context manager yields a database connection and ensures it is closed after use
 @contextmanager
 def get_conn():
     conn = None
     try:
-        conn = Connection.connect(_get_database_url(), row_factory=dict_row)
+        conn = psycopg2.connect(
+            _get_database_url(),
+            cursor_factory=RealDictCursor
+        )
         yield conn
     finally:
         if conn:

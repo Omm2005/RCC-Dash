@@ -11,6 +11,7 @@ def retention():
         with get_conn() as conn:
             return build_retention_payload(conn)
     except Exception as e:
+
         return {"detail": str(e)}  # TEMP: guaranteed JSON output
 
 @router.get("/overview") 
