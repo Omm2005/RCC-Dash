@@ -1,7 +1,7 @@
 "use client"
 
 import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 import {
   Card,
@@ -22,35 +22,39 @@ import {
 export const description = "A stacked bar chart with a legend"
 
 const chartData = [
-  { month: "January", desktop: 186, business: 80, handa: 50, other: 30 },
-  { month: "February", desktop: 305, business: 120, handa: 70, other: 40 },
-  { month: "March", desktop: 237, business: 90, handa: 60, other: 25 },
-  { month: "April", desktop: 73, business: 50, handa: 20, other: 15 },
-  { month: "May", desktop: 209, business: 130, handa: 80, other: 40 },
-  { month: "June", desktop: 214, business: 140, handa: 90, other: 50 },
+  { month: "January", Technical: 186, Business: 80, handa: 50, HealthSciences: 50, other: 30 },
+  { month: "February", Technical: 305, Business: 120, handa: 70, HealthSciences: 50, other: 40 },
+  { month: "March", Technical: 237, Business: 90, handa: 60, HealthSciences: 50, other: 25 },
+  { month: "April", Technical: 73, Business: 50, handa: 20, HealthSciences: 50, other: 15 },
+  { month: "May", Technical: 209, Business: 130, handa: 80, HealthSciences: 50, other: 40 },
+  { month: "June", Technical: 214, Business: 140, handa: 90, HealthSciences: 50, other: 50 },
 ]
 
 const chartConfig = {
-  desktop: {
-    label: "TECH",
+  Technical: {
+    label: "Technical",
     color: "var(--chart-1)",
   },
-  business: {
-    label: "BUS",
+  Business: {
+    label: "Business",
     color: "var(--chart-2)",
   },
   handa: {
-    label: "H&A",
+    label: "Humanities and Arts",
     color: "var(--chart-3)",
   },
-  other: {
-    label: "O/U",
+  HealthSciences: {
+    label: "Health Science",
     color: "var(--chart-4)",
+  },
+  other: {
+    label: "Other",
+    color: "var(--chart-5)",
   },
 } satisfies ChartConfig
 
 export function RetentionStacked() {
-  const keys = Object.keys(chartConfig) // ['desktop', 'business', 'handa', 'other']
+  const keys = Object.keys(chartConfig) // ['desktop', 'Business', 'handa', 'other']
 
   return (
     <CardContent>
@@ -64,6 +68,7 @@ export function RetentionStacked() {
             axisLine={false}
             tickFormatter={(value) => value.slice(0, 3)}
           />
+          <YAxis className="pr-2 " axisLine={false}/>
           <ChartTooltip content={<ChartTooltipContent hideLabel />} />
           <ChartLegend content={<ChartLegendContent />} />
 
@@ -73,18 +78,14 @@ export function RetentionStacked() {
               dataKey={key}
               stackId="a"
               fill={chartConfig[key as keyof typeof chartConfig].color}
+              name={key} 
               radius={index === keys.length - 1 ? [4, 4, 0, 0] : [0, 0, 0, 0]}
             />
           ))}
         </BarChart>
       </ChartContainer>
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4 text-green-500" />
-        </div>
-        <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
-        </div>
+        
       </CardFooter>
     </CardContent>
   )

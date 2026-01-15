@@ -1,7 +1,7 @@
 "use client"
 
 import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 import {
   Card,
@@ -49,6 +49,7 @@ export function RetentionOverall() {
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
             />
+           <YAxis className="pr-2 " axisLine={false}/>
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
