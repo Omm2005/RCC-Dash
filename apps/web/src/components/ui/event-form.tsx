@@ -176,6 +176,7 @@ export function EventForm( { value, onChange }: EventFormProps) {
                         <SelectItem value="MLK 255">MLK 255</SelectItem>
                         <SelectItem value="Student Union">Student Union</SelectItem>
                         <SelectItem value="Tower Lawn">Tower Lawn</SelectItem>
+                        <SelectItem value="Online">Online</SelectItem>
                         <SelectItem value="Other">Other</SelectItem>
                       </SelectContent>
                     </Select>
