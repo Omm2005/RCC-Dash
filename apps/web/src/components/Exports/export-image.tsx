@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react"
 import { toPng } from "html-to-image"
 import jsPDF from "jspdf"
@@ -92,10 +91,11 @@ const convertColorToRgb = (color: string): [number, number, number] => {
   return [255, 255, 255]
 }
 
-export default function ExportDashboardButton({
-  targetId,
-  isAdmin = false,
-}: ExportDashboardButtonProps) {
+type ExportImageProps = {
+  targetId: string
+}
+
+export default function ExportImage({ targetId }: ExportImageProps) {
   const [isExporting, setIsExporting] = useState(false)
   const { theme, systemTheme } = useTheme()
   const resolvedTheme = theme === "system" ? systemTheme : theme
@@ -280,8 +280,6 @@ export default function ExportDashboardButton({
       setIsExporting(false)
     }
   }
-
-  if (!isAdmin) return null
 
   return (
     <DropdownMenu>

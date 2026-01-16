@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import Exports from "./exports"
+import Exports from "./Exports"
 
 
 export function SiteHeader({ isAdmin = false }: { isAdmin?: boolean }) {

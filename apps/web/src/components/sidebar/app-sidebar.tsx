@@ -13,8 +13,10 @@ import {
 } from "@/components/ui/sidebar"
 import { getUser } from "@/lib/actions"
 import { NavMain } from "./nav-main"
-import { LayoutDashboard, User } from "@hugeicons/core-free-icons"
-import Exports from "../exports"
+import Exports from "../Exports"
+import Users from "../Icons/Users"
+import User from "../Icons/User"
+import Dashboard from "../Icons/Dashboard"
 
 export async function AppSidebar({
   isAdmin,
@@ -31,6 +33,32 @@ export async function AppSidebar({
   const avatar = user?.avatar_url || user?.picture || ""
   const joinedAt = user?.created_at || null
   const userId = user?.id
+
+  const items = isAdmin ?
+  [
+    {
+      title: 'Dashboard',
+      icon: <Dashboard />,
+      url: '/'
+    },
+    {
+      title: 'Admin',
+      icon: <User />,
+      url: '/admin'
+    },
+    {
+      title: 'Users',
+      icon: <Users />,
+      url: '/users'
+    }
+  ] : [
+    {
+      title: 'Dashboard',
+      icon: <Dashboard />,
+      url: '/'
+    }
+  ]
+
   return (
     <Sidebar collapsible="offExamples" {...props}>
       <SidebarHeader>
@@ -47,18 +75,7 @@ export async function AppSidebar({
       </SidebarHeader>
       <SidebarContent>
         <NavMain 
-        items={[
-          {
-            title: 'Dashboard',
-            icon: LayoutDashboard,
-            url: '/'
-          },
-          {
-            title: 'Admin',
-            icon: User,
-            url: '/admin'
-          }
-        ]}
+        items={items}
         />
       </SidebarContent>
       <SidebarFooter className="flex flex-col gap-2" >

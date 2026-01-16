@@ -374,6 +374,7 @@ async def import_event_attendance(
 
     attendance_rows: List[Dict[str, Any]] = []
     seen_emails: Set[str] = set()
+    skipped_rows: List[Dict[str, Any]] = []
 
     for row in reader:
         # Check for empty or missing row
@@ -381,11 +382,17 @@ async def import_event_attendance(
             continue 
 
         rows_received += 1
+        row_number = rows_received
         email_raw = (row.get(email_col) or "").strip()
         
         # Think about this design 
         if not email_raw:
             rows_skipped += 1
+            skipped_rows.append({
+                "row_number": row_number,
+                "reason": "Missing email",
+                "row": row,
+            })
             continue 
 
         attendee_email = normalize_email(email_raw)
@@ -394,6 +401,11 @@ async def import_event_attendance(
         if attendee_email in seen_emails:
             warn_duplicate_email += 1
             rows_skipped += 1
+            skipped_rows.append({
+                "row_number": row_number,
+                "reason": "Duplicate email in CSV",
+                "row": row,
+            })
             continue
         seen_emails.add(attendee_email)
 
@@ -521,6 +533,7 @@ async def import_event_attendance(
         "event_id": event_id,
         "validationSummary": validationSummary,
         "successSummary": successSummary,
+        "skippedRows": skipped_rows,
         "warnings": warnings,
     }
 

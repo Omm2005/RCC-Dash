@@ -12,21 +12,31 @@ type UploadAreaProps = {
 
 export default function UploadArea({ onFile, className, isCompact } : UploadAreaProps) {
   const [files, setFiles] = useState<File[] | undefined>();
+  
   const handleDrop = (droppedFiles: File[]) => {
     if (droppedFiles.length > 1) {
       alert("Please upload only ONE CSV file");
+      return;
     }
-    console.log(droppedFiles);
 
-    const firstFile = droppedFiles?.[0] ?? null;
+    const firstFile = droppedFiles?.[0];
+    
+    // Check if file is a CSV
+    if (firstFile && !firstFile.name.toLowerCase().endsWith('.csv')) {
+      alert("Please upload only CSV files");
+      return;
+    }
+
     setFiles(firstFile ? [firstFile] : undefined);
-    onFile(firstFile);
+    onFile(firstFile ?? null);
   };
+
   return (
     <Dropzone
       onDrop={handleDrop}
       onError={console.error}
       src={files}
+      accept={{ 'text/csv': ['.csv'] }}
       className={cn(isCompact && 'p-4', className)}
     >
       <DropzoneEmptyState>
@@ -48,10 +58,10 @@ export default function UploadArea({ onFile, className, isCompact } : UploadArea
           </div>
           <div className="text-left">
             <p className={cn('font-medium', isCompact ? 'text-xs' : 'text-sm')}>
-              Upload a file
+              Upload a CSV file
             </p>
             <p className="text-muted-foreground text-xs">
-              Drag and drop or click to upload (1 file only)
+              Drag and drop or click to upload (CSV only, 1 file)
             </p>
           </div>
         </div>

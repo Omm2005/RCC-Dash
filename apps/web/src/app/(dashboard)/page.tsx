@@ -16,59 +16,44 @@ export default async function Page() {
     return redirect("/signin");
   }
   return (
-    <main className="flex h-full w-full items-center flex-col justify-center gap-4 p-32">
-      <div className="">
-        
-        <div className="flex flex-col mb-5 gap-5">
-          <h1 className="text-3xl font-semibold">RCC Engagement Dashboard</h1>
-          <h3>
+    <main className="flex w-full flex-1 flex-col gap-8 px-4 py-6 sm:px-6 lg:px-10 xl:px-12">
+      <div className="mx-auto w-full max-w-7xl space-y-8">
+        <div className="space-y-2">
+            <div className="flex justify-between items-center">
+                <h1 className="text-2xl font-semibold sm:text-3xl">
+                    RCC Engagement Dashboard
+                </h1>
+            </div>
+          <h3 className="text-sm font-medium text-muted-foreground sm:text-base">
             Overview & Growth
           </h3>
         </div>
 
-        <div className="items-center">
-
-        
-        <div className="flex flex-col w-full gap-20 ">
-           <div className="flex w-full gap-20">
-              
-              <div className="flex-1">
-                <BigNumber />
-              </div>
-              <div className="flex-1">
-                <BigNumber />
-              </div>
-              <div className="flex-1">
-                <BigNumber />
-              </div>
-            </div>
-
-          <div className="w-full">
-            <ChartLineMultiple></ChartLineMultiple>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="flex flex-col gap-8">
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <BigNumber />
             <BigNumber />
             <BigNumber />
             <BigNumber />
           </div>
-          <div className="w-full">
+
+          <div className="min-w-0">
             <ChartLineMultiple />
           </div>
+
           <div className="grid gap-6 lg:grid-cols-3">
-            <div className="lg:col-span-1">
+            <div className="min-w-0 lg:col-span-1">
               <ChartPieLabelList />
             </div>
-            <div className="lg:col-span-2">
+            <div className="min-w-0 lg:col-span-2">
               <ChartBarStacked />
             </div>
           </div>
+
+          <div className="min-w-0">
+            <RetentionDistributionChart />
+          </div>
         </div>
-
-        <RetentionDistributionChart></RetentionDistributionChart>
-
-        </div>
-
       </div>
     </main>
   );

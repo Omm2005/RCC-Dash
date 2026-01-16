@@ -52,7 +52,6 @@ export function NavUser({
   const { isMobile } = useSidebar()
   const showFallbackIcon = !user.avatar
   const [profileOpen, setProfileOpen] = useState(false)
-  console.log("Rendering NavUser with user:", user)
 
   return (
     <SidebarMenu>
@@ -106,24 +105,9 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => toast.info('Just Kidding')}>
-                <Sparkles />
-                Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
               <DropdownMenuItem onSelect={() => setProfileOpen(true)}>
                 <BadgeCheck />
                 Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

@@ -14,12 +14,14 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
 const FormSubmitButton = ({
   pendingText = "Submitting...",
   children,
+  disabled,
   ...buttonProps
 }: Props) => {
   const { pending } = useFormStatus();
+  const isDisabled = pending || disabled;
 
   return (
-    <Button type="submit" disabled={pending} {...buttonProps}>
+    <Button type="submit" disabled={isDisabled} {...buttonProps}>
       {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
       {pending ? pendingText : children}
     </Button>

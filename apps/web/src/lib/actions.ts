@@ -1,6 +1,6 @@
 "use server";
 import { redirect } from "next/navigation";
-import { createClient } from "@repo/supabase/server";
+import { createClient, createAdminClient } from "@repo/supabase/server";
 import type { Provider } from "@repo/supabase/types";
 import { revalidatePath } from "next/cache";
 import { ensureProfileExists } from "@/lib/profile";
@@ -182,24 +182,14 @@ const updateProfile = async (
 ): Promise<AuthState> => {
   const supabase = await createClient();
   const displayName = (formData.get("displayName") as string | null)?.trim();
-  const avatarUrl = (formData.get("avatarUrl") as string | null)?.trim();
 
   if (!displayName) {
     return { error: "Display name is required." };
   }
 
-  if (avatarUrl) {
-    try {
-      new URL(avatarUrl);
-    } catch {
-      return { error: "Avatar URL must be a valid URL." };
-    }
-  }
-
   const { error } = await supabase.auth.updateUser({
     data: {
       display_name: displayName,
-      avatar_url: avatarUrl ? avatarUrl : null,
     },
   });
 
@@ -254,6 +244,106 @@ const getUserRole = async () => {
   return data?.role ?? null;
 }
 
+const getAllUsers = async () => {
+  const role = await getUserRole();
+  if (role !== "admin") {
+    return [];
+  }
+
+  const adminClient = await createAdminClient();
+
+  const { data: usersData, error: usersError } =
+    await adminClient.auth.admin.listUsers({ perPage: 1000 });
+
+  if (usersError) {
+    throw new Error(usersError.message);
+  }
+
+  const users = usersData?.users ?? [];
+  if (!users.length) {
+    return [];
+  }
+
+  const userIds = users.map((user) => user.id);
+  const { data: profiles, error: profilesError } = await adminClient
+    .from("profiles")
+    .select("user_id, role")
+    .in("user_id", userIds);
+
+  if (profilesError) {
+    throw new Error(profilesError.message);
+  }
+
+  const roleMap = new Map(
+    (profiles ?? []).map((profile) => [profile.user_id, profile.role])
+  );
+
+  return users.map((user) => {
+    const metadata = user.user_metadata ?? {};
+    const identityData = user.identities?.[0]?.identity_data ?? {};
+    const displayName =
+      (metadata.display_name as string | undefined) ||
+      (metadata.full_name as string | undefined) ||
+      (metadata.name as string | undefined) ||
+      (identityData.full_name as string | undefined) ||
+      (identityData.name as string | undefined) ||
+      user.email ||
+      "User";
+    const avatar =
+      (metadata.avatar_url as string | undefined) ||
+      (metadata.picture as string | undefined) ||
+      (metadata.avatarUrl as string | undefined) ||
+      (identityData.avatar_url as string | undefined) ||
+      (identityData.picture as string | undefined) ||
+      "";
+
+    return {
+      id: user.id,
+      email: user.email ?? "",
+      name: displayName,
+      avatar,
+      role:
+        roleMap.get(user.id) ??
+        (metadata.role as string | undefined) ??
+        "member",
+      created_at: user.created_at ?? null,
+    };
+  });
+};
+
+const updateUserRole = async (
+  userId: string,
+  role: string,
+): Promise<AuthState> => {
+  const currentRole = await getUserRole();
+  if (currentRole !== "admin") {
+    return { error: "Not authorized to update roles." };
+  }
+
+  if (!userId || !role) {
+    return { error: "Invalid role update request." };
+  }
+
+  const adminClient = await createAdminClient();
+
+  const { error: profileError } = await adminClient
+    .from("profiles")
+    .upsert(
+      {
+        user_id: userId,
+        role,
+      },
+      { onConflict: "user_id" },
+    );
+
+  if (profileError) {
+    return { error: profileError.message };
+  }
+
+  revalidatePath("/users");
+  return { success: "Role updated." };
+};
+
 export {
   signInWithPassword,
   signInWithOAuth,
@@ -264,4 +354,6 @@ export {
   updateProfile,
   requestPasswordReset,
   updatePassword,
+  getAllUsers,
+  updateUserRole,
 };
