@@ -24,6 +24,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
@@ -44,6 +45,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { updateUserRole } from "@/lib/actions"
 import { toast } from "sonner"
 
@@ -78,6 +99,12 @@ const ROLE_OPTIONS = [
   { value: "admin", label: "Admin" },
 ] as const
 
+type NewUserFormState = {
+  name: string
+  email: string
+  role: (typeof ROLE_OPTIONS)[number]["value"]
+}
+
 type UsersTableProps = {
   data: UserRow[]
 }
@@ -94,10 +121,50 @@ export default function UsersTable({ data }: UsersTableProps) {
   const [updatingRoles, setUpdatingRoles] = React.useState<
     Record<string, boolean>
   >({})
+  const [deleteTarget, setDeleteTarget] = React.useState<UserRow | null>(null)
+  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false)
+  const [addDialogOpen, setAddDialogOpen] = React.useState(false)
+  const [newUser, setNewUser] = React.useState<NewUserFormState>({
+    name: "",
+    email: "",
+    role: ROLE_OPTIONS[0].value,
+  })
 
   React.useEffect(() => {
     setTableData(data)
   }, [data])
+
+  const handleAddUser = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const name = newUser.name.trim()
+    const email = newUser.email.trim().toLowerCase()
+
+    if (!name || !email) {
+      toast.error("Name and email are required.")
+      return
+    }
+
+    const nextUser: UserRow = {
+      id: crypto.randomUUID(),
+      name,
+      email,
+      avatar: "",
+      role: newUser.role,
+      created_at: new Date().toISOString(),
+    }
+
+    setTableData((prev) => [nextUser, ...prev])
+    setNewUser({ name: "", email: "", role: ROLE_OPTIONS[0].value })
+    setAddDialogOpen(false)
+    toast.success("User added.")
+  }
+
+  const handleAddDialogOpenChange = React.useCallback((open: boolean) => {
+    setAddDialogOpen(open)
+    if (!open) {
+      setNewUser({ name: "", email: "", role: ROLE_OPTIONS[0].value })
+    }
+  }, [])
 
   const handleRoleChange = React.useCallback(
     async (userId: string, nextRole: string, currentRole: string) => {
@@ -127,6 +194,26 @@ export default function UsersTable({ data }: UsersTableProps) {
     },
     []
   )
+
+  const handleDeleteOpenChange = React.useCallback((open: boolean) => {
+    setDeleteDialogOpen(open)
+    if (!open) {
+      setDeleteTarget(null)
+    }
+  }, [])
+
+  const handleDeleteRequest = React.useCallback((user: UserRow) => {
+    setDeleteTarget(user)
+    setDeleteDialogOpen(true)
+  }, [])
+
+  const handleDeleteConfirm = React.useCallback(() => {
+    if (!deleteTarget) return
+    setTableData((prev) => prev.filter((user) => user.id !== deleteTarget.id))
+    toast.success("User deleted.")
+    setDeleteDialogOpen(false)
+    setDeleteTarget(null)
+  }, [deleteTarget])
 
   const columns = React.useMemo<ColumnDef<UserRow>[]>(
     () => [
@@ -271,13 +358,20 @@ export default function UsersTable({ data }: UsersTableProps) {
                 >
                   Copy email
                 </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="text-destructive focus:text-destructive"
+                  onClick={() => handleDeleteRequest(user)}
+                >
+                  Delete user
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           )
         },
       },
     ],
-    [handleRoleChange, updatingRoles]
+    [handleDeleteRequest, handleRoleChange, updatingRoles]
   )
 
   const table = useReactTable({
@@ -301,6 +395,90 @@ export default function UsersTable({ data }: UsersTableProps) {
 
   return (
     <div className="w-full space-y-4">
+      <form
+        onSubmit={handleAddUser}
+        className="grid gap-3 rounded-md border bg-muted/30 p-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,150px)_minmax(0,1fr)_auto] sm:items-end"
+      >
+        <div className="grid gap-2">
+          <label
+            htmlFor="new-user-name"
+            className="text-xs font-medium text-muted-foreground"
+          >
+            Name
+          </label>
+          <Input
+            id="new-user-name"
+            placeholder="Jane Doe"
+            value={newUser.name}
+            onChange={(event) =>
+              setNewUser((prev) => ({ ...prev, name: event.target.value }))
+            }
+          />
+        </div>
+        <div className="grid gap-2">
+          <label
+            htmlFor="new-user-email"
+            className="text-xs font-medium text-muted-foreground"
+          >
+            Email
+          </label>
+          <Input
+            id="new-user-email"
+            type="email"
+            placeholder="jane@example.com"
+            value={newUser.email}
+            onChange={(event) =>
+              setNewUser((prev) => ({ ...prev, email: event.target.value }))
+            }
+          />
+        </div>
+        <div className="grid gap-2">
+          <span className="text-xs font-medium text-muted-foreground">Role</span>
+          <Select
+            value={newUser.role}
+            onValueChange={(value) =>
+              setNewUser((prev) => ({
+                ...prev,
+                role: value as NewUserFormState["role"],
+              }))
+            }
+          >
+            <SelectTrigger className="h-9">
+              <SelectValue placeholder="Select role" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Role</SelectLabel>
+                {ROLE_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="grid gap-2">
+          <label
+            htmlFor="new-user-avatar"
+            className="text-xs font-medium text-muted-foreground"
+          >
+            Avatar URL
+          </label>
+          <Input
+            id="new-user-avatar"
+            type="url"
+            placeholder="https://..."
+            value={newUser.avatar}
+            onChange={(event) =>
+              setNewUser((prev) => ({ ...prev, avatar: event.target.value }))
+            }
+          />
+        </div>
+        <Button type="submit" className="w-full sm:w-auto">
+          Add user
+        </Button>
+      </form>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <Input
           placeholder="Filter emails..."
@@ -405,6 +583,30 @@ export default function UsersTable({ data }: UsersTableProps) {
           </Button>
         </div>
       </div>
+      <AlertDialog open={deleteDialogOpen} onOpenChange={handleDeleteOpenChange}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete user?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently remove{" "}
+              <span className="font-medium text-foreground">
+                {deleteTarget?.name ?? "this user"}
+              </span>{" "}
+              {deleteTarget?.email ? `(${deleteTarget.email})` : ""} from the
+              dashboard.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              onClick={handleDeleteConfirm}
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
