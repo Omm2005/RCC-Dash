@@ -65,7 +65,7 @@ export function PieChartYear() {
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Pie data={chartData} dataKey="visitors" nameKey="browser">
+            <Pie data={chartData} dataKey="visitors" nameKey="browser" isAnimationActive={false}>
               
               <LabelList
                 dataKey="browser"

@@ -54,7 +54,7 @@ export function PieChartMajor() {
             cursor={false}
             content={<ChartTooltipContent hideLabel />}
           />
-          <Pie data={chartData} dataKey="visitors" nameKey="major">
+          <Pie data={chartData} dataKey="visitors" nameKey="major" isAnimationActive={false}>
             <LabelList
               dataKey="major"
               className="fill-background"
