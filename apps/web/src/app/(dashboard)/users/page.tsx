@@ -1,12 +1,24 @@
+import { redirect } from "next/navigation";
 import UsersTable from "./users-table"
 import { getAllUsers, getUserRole } from "@/lib/actions"
 
 export default async function UsersPage() {
   const users = await getAllUsers()
-  const role = await getUserRole();
-  const isAdmin = role === "admin";
+  const result = await getUserRole();
+  
+  if(!result) {
+    return redirect("/");
+  }
+
+  const { data } = result;
+
+  if (!data.id) {
+    return redirect('/');
+  }
+
+  const isAdmin = data && data.role === "admin";
   if (!isAdmin) {
-    return null;
+    return redirect("/");;
   }
 
   return (
@@ -18,7 +30,7 @@ export default async function UsersPage() {
             {users.length} total
           </span>
         </div>
-        <UsersTable data={users} />
+        <UsersTable data={users} id={data.id} />
       </div>
     </main>
   )

@@ -8,7 +8,7 @@ const venvDir = path.join(projectRoot, '.venv');
 const binDir = path.join(venvDir, process.platform === 'win32' ? 'Scripts' : 'bin');
 
 if (!fs.existsSync(binDir)) {
-  console.error(`Virtual environment not found at ${binDir}. Run "bun run server:install" first.`);
+  console.log(`Virtual environment not found at ${binDir}. Run "bun run server:install" first.`);
   process.exit(1);
 }
 
@@ -30,7 +30,7 @@ const runPython = (index = 0) => {
       return;
     }
 
-    console.error(`Failed to run ${command}: ${error.message}`);
+    console.log(`Failed to run ${command}: ${error.message}`);
     process.exit(1);
   });
 

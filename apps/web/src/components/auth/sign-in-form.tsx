@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { GalleryVerticalEnd } from "lucide-react";
 import { toast } from "sonner";
@@ -19,11 +20,17 @@ const initialState: AuthState = {
   error: undefined,
 };
 
-const SignInForm = () => {
+type SignInFormProps = {
+  oauthError?: string;
+};
+
+const SignInForm = ({ oauthError }: SignInFormProps) => {
   const [state, formAction] = useActionState(
     signInWithPassword,
     initialState,
   );
+  const searchParams = useSearchParams();
+
   const form = useForm<SignInValues>({
     defaultValues: {
       email: "",
@@ -36,6 +43,16 @@ const SignInForm = () => {
       toast.error(state.error);
     }
   }, [state?.error]);
+
+  useEffect(() => {
+    const queryError = searchParams.get("error");
+    const resolvedError = oauthError ?? queryError;
+    if (resolvedError === "not_authorized") {
+      setTimeout(() => {
+        toast.error("You are not authorized to use OAuth.");
+      }, 0);
+    }
+  }, [oauthError, searchParams]);
 
   return (
     <Form {...form}>

@@ -9,12 +9,17 @@ type Props = {
 }
 
 const layout = async ({children}: Props) => {
-  const role = await getUserRole();
+  const result = await getUserRole();
+  if(!result) {
+    return null;
+  }
+
+  const { role } = result.data
   const isAdmin = role === "admin";
 
   return (
     <>
-      <AppSidebar variant='inset' isAdmin={isAdmin} role={role} />
+      <AppSidebar variant='inset' isAdmin={isAdmin} role={role as string} />
         <SidebarInset>
           <SiteHeader isAdmin={isAdmin} />
           {children}

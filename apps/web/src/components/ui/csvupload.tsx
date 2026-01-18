@@ -3,6 +3,7 @@ import { Dropzone, DropzoneContent, DropzoneEmptyState } from '@/components/ui/s
 import { cn } from '@/lib/utils';
 import { UploadIcon } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 type UploadAreaProps = {
   onFile: (file: File | null) => void;
@@ -34,7 +35,11 @@ export default function UploadArea({ onFile, className, isCompact } : UploadArea
   return (
     <Dropzone
       onDrop={handleDrop}
-      onError={console.error}
+      onError={() => {
+        onFile(null)
+        toast.error("File upload failed. Please try again.");
+        console.log("File upload error");
+      }}
       src={files}
       accept={{ 'text/csv': ['.csv'] }}
       className={cn(isCompact && 'p-4', className)}

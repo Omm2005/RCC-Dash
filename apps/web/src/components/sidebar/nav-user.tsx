@@ -33,7 +33,6 @@ import {
 } from "@/components/ui/sidebar"
 import { ThemeSwitcher } from "../theme-switcher"
 import { signOut } from "@/lib/actions"
-import { toast } from "sonner"
 import { ProfileModal } from "@/components/profile-modal"
 
 export function NavUser({

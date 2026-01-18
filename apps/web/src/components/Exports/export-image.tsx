@@ -265,7 +265,6 @@ export default function ExportImage({ targetId }: ExportImageProps) {
         pdf.save(`${filenameBase}.pdf`)
         toast.success("PDF export completed.")
       } catch (error) {
-        console.error("PDF generation failed, falling back to PNG", error)
         const dataUrl = await renderPngDataUrl(true)
         const blob = dataUrlToBlob(dataUrl)
         downloadBlob(blob, `${filenameBase}.png`)
@@ -275,7 +274,6 @@ export default function ExportImage({ targetId }: ExportImageProps) {
       const message =
         error instanceof Error ? error.message : "Export failed."
       toast.error(message)
-      console.error("Export error:", error)
     } finally {
       setIsExporting(false)
     }

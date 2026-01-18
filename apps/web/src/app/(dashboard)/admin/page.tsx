@@ -14,9 +14,15 @@ export default async function AdminPage() {
     return redirect("/signin");
   }
 
-const role = await getUserRole();
+const result = await getUserRole();
 
-  if (role !== "admin") {
+if(!result) {
+  return redirect("/");
+}
+
+const { data } = result;
+
+  if (data && data.role !== "admin") {
     return redirect("/");
   }
 
