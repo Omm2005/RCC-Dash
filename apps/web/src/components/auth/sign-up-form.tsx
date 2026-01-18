@@ -50,8 +50,13 @@ const SignUpForm = ({ oauthError }: SignUpFormProps) => {
 
   useEffect(() => {
     if (state?.error) {
+      if(state.error === `insert or update on table "profiles" violates foreign key constraint "profiles_user_id_fkey"`) {
+        toast.error("An account with this email already exists.");
+        return redirect("/signin");
+      } else {
         toast.error(state.error);
         return;
+      }
     }
 
     if (state?.success) {
