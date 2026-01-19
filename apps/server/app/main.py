@@ -1,13 +1,17 @@
 import os
 from pathlib import Path
 
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv
+except ModuleNotFoundError:
+    load_dotenv = None
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # Load env BEFORE importing anything that might use it
 ENV_PATH = Path(__file__).resolve().parents[1] / ".env"  # -> apps/server/.env
-load_dotenv(dotenv_path=ENV_PATH, override=True)
+if load_dotenv is not None:
+    load_dotenv(dotenv_path=ENV_PATH, override=True)
 
 from app.api.import_event_info import router as import_router 
 from app.routes.analytics import router as analytics_router
