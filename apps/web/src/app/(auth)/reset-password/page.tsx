@@ -13,9 +13,9 @@ export default async function ResetPasswordPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (user) {
-    redirect("/");
-  }
+  // if (user) {
+  //   redirect("/");
+  // }
 
   return (
     <div className="flex min-h-svh flex-col items-center justify-center bg-background px-6 py-10">

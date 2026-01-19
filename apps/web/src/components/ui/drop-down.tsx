@@ -33,7 +33,7 @@ export function DropdownMenuDemo({ value, onChange } : DropdownMenuDemoProps) {
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="w-56" align="start">
+      <DropdownMenuContent align="start">
         <DropdownMenuLabel>To import:</DropdownMenuLabel>
         <DropdownMenuGroup>
           {/* 

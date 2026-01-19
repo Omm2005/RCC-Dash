@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { GalleryVerticalEnd } from "lucide-react";
 import { toast } from "sonner";
@@ -29,11 +30,16 @@ const initialState: AuthState = {
   success: undefined,
 };
 
-const SignUpForm = () => {
+type SignUpFormProps = {
+  oauthError?: string;
+};
+
+const SignUpForm = ({ oauthError }: SignUpFormProps) => {
   const [state, formAction] = useActionState(
     signUpWithPassword,
     initialState,
   );
+  const searchParams = useSearchParams();
   const form = useForm<SignUpValues>({
     defaultValues: {
       email: "",
@@ -44,8 +50,13 @@ const SignUpForm = () => {
 
   useEffect(() => {
     if (state?.error) {
+      if(state.error === `insert or update on table "profiles" violates foreign key constraint "profiles_user_id_fkey"`) {
+        toast.error("An account with this email already exists.");
+        return redirect("/signin");
+      } else {
         toast.error(state.error);
         return;
+      }
     }
 
     if (state?.success) {
@@ -53,6 +64,16 @@ const SignUpForm = () => {
       return redirect("/signin");
     }
   }, [state?.error, state?.success]);
+
+  useEffect(() => {
+    const queryError = searchParams.get("error");
+    const resolvedError = oauthError ?? queryError;
+    if (resolvedError === "not_authorized") {
+      setTimeout(() => {
+        toast.error("You are not authorized to use OAuth.");
+      }, 0);
+    }
+  }, [oauthError, searchParams]);
 
   return (
     <Form {...form}>

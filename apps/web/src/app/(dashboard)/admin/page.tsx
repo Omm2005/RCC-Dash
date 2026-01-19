@@ -1,11 +1,7 @@
 import { createClient } from "@repo/supabase/server";
 import { redirect } from "next/navigation";
 import AdminImportPanel from "@/components/admin/AdminImportPanel";
-import { DropdownMenuDemo } from "@/components/ui/drop-down"
-import { TextCard } from "@/components/ui/text-card"
-import { ImportButton } from "@/components/ui/import-button"
-import UploadArea from "@/components/ui/csvupload"
-import { EventForm } from "@/components/ui/event-form"
+import { getUserRole } from "@/lib/actions";
 
 
 export default async function AdminPage() {
@@ -18,10 +14,23 @@ export default async function AdminPage() {
     return redirect("/signin");
   }
 
+const result = await getUserRole();
+
+if(!result) {
+  return redirect("/");
+}
+
+const { data } = result;
+
+  if (data && data.role !== "admin") {
+    return redirect("/");
+  }
+
   return (
-    <main className="flex h-full w-full flex-col gap-6 p-10">
-      <h1 className="text-3xl font-semibold">Admin Page</h1>
-      <AdminImportPanel />
+    <main className="flex w-full flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-10 xl:px-12">
+      <div className="mx-auto w-full max-w-5xl space-y-6">
+        <AdminImportPanel />
+      </div>
     </main>
   );
 }

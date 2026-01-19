@@ -26,6 +26,7 @@
   "dependencies": {
     "@repo/env": "workspace:*",
     "dotenv": "catalog:",
+    "html-to-image": "^1.11.13",
     "react-dropzone": "^14.3.8",
     "zod": "catalog:"
   },

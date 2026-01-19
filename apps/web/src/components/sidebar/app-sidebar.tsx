@@ -13,11 +13,52 @@ import {
 } from "@/components/ui/sidebar"
 import { getUser } from "@/lib/actions"
 import { NavMain } from "./nav-main"
-import { Layout } from "lucide-react"
-import { LayoutDashboard, User } from "@hugeicons/core-free-icons"
+import Exports from "../Exports"
+import Users from "../Icons/Users"
+import User from "../Icons/User"
+import Dashboard from "../Icons/Dashboard"
 
-export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-    const user = await getUser();
+export async function AppSidebar({
+  isAdmin,
+  role,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & {
+  isAdmin: boolean
+  role?: string | null
+}) {
+  //! Type issue! TODO: fix later
+  const user: any = await getUser()
+  const displayName = user?.display_name || user?.full_name || user?.name || "User"
+  const email = user?.email || ""
+  const avatar = user?.avatar_url || user?.picture || ""
+  const joinedAt = user?.created_at || null
+  const userId = user?.id
+
+  const items = isAdmin ?
+  [
+    {
+      title: 'Dashboard',
+      icon: <Dashboard />,
+      url: '/'
+    },
+    {
+      title: 'Admin',
+      icon: <User />,
+      url: '/admin'
+    },
+    {
+      title: 'Users',
+      icon: <Users />,
+      url: '/users'
+    }
+  ] : [
+    {
+      title: 'Dashboard',
+      icon: <Dashboard />,
+      url: '/'
+    }
+  ]
+
   return (
     <Sidebar collapsible="offExamples" {...props}>
       <SidebarHeader>
@@ -34,26 +75,18 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
       </SidebarHeader>
       <SidebarContent>
         <NavMain 
-        items={[
-          {
-            title: 'Dashboard',
-            icon: LayoutDashboard,
-            url: '/'
-          },
-          {
-            title: 'Admin',
-            icon: User,
-            url: '/admin'
-          }
-        ]}
+        items={items}
         />
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="flex flex-col gap-2" >
+        <Exports isAdmin={isAdmin} sidebar classNames="md:hidden" />
         <NavUser user={{
-            name: user!.display_name || user!.name || user!.full_name ||"User",
-            email: user?.email || "",
-            avatar:  user?.avatar_url || user!.picture || "",
-        }} />
+            id: userId,
+            name: displayName,
+            email,
+            avatar,
+            joinedAt,
+        }} role={role} />
       </SidebarFooter>
     </Sidebar>
   )

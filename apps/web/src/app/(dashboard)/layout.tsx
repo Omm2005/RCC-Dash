@@ -1,18 +1,28 @@
 import { SiteHeader } from '@/components/header';
 import { AppSidebar } from '@/components/sidebar/app-sidebar';
-import { SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarInset } from '@/components/ui/sidebar';
+import { getUserRole } from "@/lib/actions";
+import { redirect } from 'next/navigation';
 import React from 'react'
 
 type Props = {
     children: React.ReactNode;
 }
 
-const layout = ({children}: Props) => {
+const layout = async ({children}: Props) => {
+  const result = await getUserRole();
+  if(!result) {
+    return redirect("/signin");
+  }
+
+  const { role } = result.data
+  const isAdmin = role === "admin";
+
   return (
     <>
-      <AppSidebar variant='inset' />
+      <AppSidebar variant='inset' isAdmin={isAdmin} role={role as string} />
         <SidebarInset>
-          <SiteHeader />
+          <SiteHeader isAdmin={isAdmin} />
           {children}
         </SidebarInset>
     </>

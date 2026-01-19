@@ -25,7 +25,7 @@ export function BigNumber({ title, date, trending }: { title: string, date: stri
       </CardHeader>
 
       <CardContent>
-        <div className="text-5xl font-bold tracking-tight">
+        <div className="text-4xl font-bold tracking-tight sm:text-5xl">
           {value.toLocaleString()}
         </div>
       </CardContent>

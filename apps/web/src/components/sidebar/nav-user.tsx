@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import {
   BadgeCheck,
   Bell,
@@ -7,6 +8,7 @@ import {
   CreditCard,
   LogOut,
   Sparkles,
+  User,
 } from "lucide-react"
 
 import {
@@ -31,18 +33,24 @@ import {
 } from "@/components/ui/sidebar"
 import { ThemeSwitcher } from "../theme-switcher"
 import { signOut } from "@/lib/actions"
-import { toast } from "sonner"
+import { ProfileModal } from "@/components/profile-modal"
 
 export function NavUser({
   user,
+  role,
 }: {
   user: {
+    id?: string
     name: string
     email: string
     avatar: string
+    joinedAt?: string | null
   }
+  role?: string | null
 }) {
   const { isMobile } = useSidebar()
+  const showFallbackIcon = !user.avatar
+  const [profileOpen, setProfileOpen] = useState(false)
 
   return (
     <SidebarMenu>
@@ -54,9 +62,11 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
+                {user.avatar ? (
+                  <AvatarImage src={user.avatar} alt={user.name} />
+                ) : null}
                 <AvatarFallback className="rounded-lg">
-                  {user.name != 'User' ? (user.name.split(" ")[0][0] + user.name.split(" ")[1]?.[0]) : "OS"}
+                    <User className="h-4 w-4" />
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -67,7 +77,7 @@ export function NavUser({
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            className="w-[var(--radix-dropdown-menu-trigger-width)] min-w-56 rounded-lg"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
@@ -75,9 +85,15 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
+                  {user.avatar ? (
+                    <AvatarImage src={user.avatar} alt={user.name} />
+                  ) : null}
                   <AvatarFallback className="rounded-lg">
-                    {user.name.split(" ")[0][0] + user.name.split(" ")[1]?.[0]} 
+                    {showFallbackIcon ? (
+                      <User className="h-4 w-4" />
+                    ) : (
+                      user.name.split(" ")[0][0] + user.name.split(" ")[1]?.[0]
+                    )}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -88,24 +104,9 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => toast.info('Just Kidding')}>
-                <Sparkles />
-                Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => setProfileOpen(true)}>
                 <BadgeCheck />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
+                Profile
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
@@ -120,6 +121,12 @@ export function NavUser({
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <ProfileModal
+          user={user}
+          role={role}
+          open={profileOpen}
+          onOpenChange={setProfileOpen}
+        />
       </SidebarMenuItem>
     </SidebarMenu>
   )

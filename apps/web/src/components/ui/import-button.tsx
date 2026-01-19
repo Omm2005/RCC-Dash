@@ -10,7 +10,6 @@ export function ImportButton({ onClick, disabled }: ImportButtonProps) {
   return (
     <Button 
     onClick={() => {
-      console.log("ImportButton clicked");
       onClick();
     }}
       disabled={disabled}

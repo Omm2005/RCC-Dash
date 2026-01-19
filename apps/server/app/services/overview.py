@@ -1,4 +1,4 @@
-from psycopg import Connection
+from psycopg2.extensions import connection as Connection
 
 def build_overview_payload(
     conn: Connection,
