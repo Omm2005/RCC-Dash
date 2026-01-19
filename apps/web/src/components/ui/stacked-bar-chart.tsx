@@ -43,23 +43,18 @@ const chartConfig = {
 export function ChartBarStacked() {
 
     return(
-        <div className=" flex flex-col justify-center gap-5 w-full">
+        <div className=" flex flex-col justify-center gap-5 w-full h-full items-stretch">
             
-            <Card>
+            <Card className="h-full items-stretch justify-between">
                   <CardHeader>
                     <CardTitle>Every Event</CardTitle>
-                    <CardDescription>Pass in dates Ex:January - June 2024</CardDescription>
+                    <CardDescription>Overall attendance patterns</CardDescription>
                   </CardHeader>
 
                   {/*Only the card content in retention-overall and retention-stacked will be updated will real data */}
                     <RetentionStacked></RetentionStacked> 
                   <CardFooter className="flex-col items-start gap-2 text-sm">
-                    <div className="flex gap-2 leading-none font-medium">
-                      Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-                    </div>
-                    <div className="text-muted-foreground leading-none">
-                      Showing total visitors for the last 6 months
-                    </div>
+                    
                   </CardFooter>
                 </Card>
 

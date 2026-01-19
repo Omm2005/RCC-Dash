@@ -55,7 +55,7 @@ const chartConfig = {
 
 export function PieChartYear() {
   return (
-      <CardContent className="flex flex-1">
+      <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
           className="[&_.recharts-text]:fill-background mx-auto aspect-square max-h-[250px]"
@@ -65,7 +65,8 @@ export function PieChartYear() {
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Pie data={chartData} dataKey="visitors" nameKey="browser">
+            <Pie data={chartData} dataKey="visitors" nameKey="browser" isAnimationActive={false}>
+              
               <LabelList
                 dataKey="browser"
                 className="fill-background"

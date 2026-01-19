@@ -1,17 +1,7 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
-import { ResponsiveContainer, LabelList, Pie, PieChart } from "recharts"
-import  ToggleBar  from "@/components/ui/toggle-bar"
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { LabelList, Pie, PieChart } from "recharts"
+import { CardContent } from "@/components/ui/card"
 import {
   ChartContainer,
   ChartTooltip,
@@ -22,57 +12,61 @@ import {
 export const description = "A pie chart with a label list"
 
 const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
+  { major: "Technical", visitors: 186, fill: "var(--color-Technical)" },
+  { major: "Business", visitors: 130, fill: "var(--color-Business)" },
+  { major: "HumanitiesAndArts", visitors: 90, fill: "var(--color-HumanitiesAndArts)" },
+  { major: "HealthSciences", visitors: 50, fill: "var(--color-HealthSciences)" },
+  { major: "Other", visitors: 40, fill: "var(--color-Other)" },
 ]
 
 const chartConfig = {
-  chrome: {
-    label: "TECH",
+  Technical: {
+    label: "Tech",
     color: "var(--chart-1)",
   },
-  safari: {
-    label: "BUS",
+  Business: {
+    label: "Bus",
     color: "var(--chart-2)",
   },
-  firefox: {
-    label: "H&A",
+  HumanitiesAndArts: {
+    label: "H/Arts",
     color: "var(--chart-3)",
   },
-  edge: {
-    label: "O/U",
+  HealthSciences: {
+    label: "Health",
     color: "var(--chart-4)",
+  },
+  Other: {
+    label: "Other",
+    color: "var(--chart-5)",
   },
 } satisfies ChartConfig
 
 export function PieChartMajor() {
   return (
-      <CardContent className="flex flex-1">
-        <ChartContainer
-          config={chartConfig}
-          className="[&_.recharts-text]:fill-background mx-auto aspect-square max-h-[250px]"
-        >
-          <PieChart>
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+    <CardContent className="flex-1 pb-0">
+      <ChartContainer
+        config={chartConfig}
+        className="[&_.recharts-text]:fill-background mx-auto aspect-square max-h-[250px]"
+      >
+        <PieChart>
+          <ChartTooltip
+            cursor={false}
+            content={<ChartTooltipContent hideLabel />}
+          />
+          <Pie data={chartData} dataKey="visitors" nameKey="major" isAnimationActive={false}>
+            <LabelList
+              dataKey="major"
+              className="fill-background"
+              stroke="none"
+              fontSize={12}
+              formatter={(value: keyof typeof chartConfig) =>
+                chartConfig[value]?.label
+              }
             />
-            <Pie data={chartData} dataKey="visitors" nameKey="browser">
-              <LabelList
-                dataKey="browser"
-                className="fill-background"
-                stroke="none"
-                fontSize={12}
-                formatter={(value: keyof typeof chartConfig) =>
-                  chartConfig[value]?.label
-                }
-              />
-            </Pie>
-          </PieChart>
-        </ChartContainer>
-      </CardContent>
-      
+          </Pie>
+        </PieChart>
+      </ChartContainer>
+    </CardContent>
   )
 }
