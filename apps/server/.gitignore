@@ -14,3 +14,4 @@ venv.bak/
 
 .venv
 __pycache__
+.env*.local
